@@ -1,0 +1,190 @@
+import { QuranicSign } from '../../types/quran';
+
+export const QURANIC_SIGNS_DATA: QuranicSign[] = [
+  {
+    id: 'cosmic-expansion',
+    slug: 'expanding-universe',
+    title_en: 'The Expanding Universe',
+    title_bn: 'মহাবিশ্বের ক্রমসম্প্রসারণ',
+    category: 'cosmology',
+    category_display_en: 'Cosmology & Astrophysics',
+    category_display_bn: 'জ্যোতির্বিদ্যা ও সৃষ্টিতত্ত্ব',
+    ayahs: [
+      {
+        surah: 51,
+        ayah: 47,
+        text_ar: 'وَٱلسَّمَآءَ بَنَيْنَٰهَا بِأَيْيْدٍۢ وَإِنَّا لَمُوسِعُونَ',
+        translation_en: 'And the heaven We constructed with strength, and indeed, We are [its] expander.',
+        translation_bn: 'আর আকাশকে আমি নিজ শক্তিতে নির্মাণ করেছি এবং নিশ্চয়ই আমি একে সম্প্রসারণকারী।'
+      }
+    ],
+    explanation_en: 'The Arabic active participle "lāmūsi‘ūn" (from the root w-s-‘) denotes continuous expansion or causing vastness. In 1929, Edwin Hubble observed red-shift proving that galaxies are moving away from each other, demonstrating cosmic expansion.',
+    explanation_bn: 'আরবি "লামূসিউন" শব্দটি (মূলধাতু ও-স-আ) অবিরাম বিস্তার বা সম্প্রসারণের অর্থ জ্ঞাপন করে। ১৯২৯ সালে এডউইন হাবল মহাবিশ্ব যে স্থির নয় বরং চারদিকে প্রসারিত হচ্ছে তা বৈজ্ঞানিকভাবে প্রমাণ করেন।',
+    scholarly_perspective_en: 'Classical exegetes like Ibn Kathir and At-Tabari understood this as Allah making the celestial expanse immense and sustaining its vast provisions. Modern scholars highlight the remarkable linguistic precision aligning with astrophysical findings.',
+    scholarly_perspective_bn: 'ইবনে কাসীর ও আত-তাবারীর মতো ক্লাসিকাল তাফসিরকারকগণ একে আকাশের সুবিশাল নির্মাণ ও অফুরন্ত রিজিক হিসেবে ব্যাখ্যা করেছেন। আধুনিক গবেষকগণ আরবি ভাষার এই অন্তর্নিহিত সূক্ষ্মতাকে তুলে ধরেন।',
+    scientific_references: [
+      'Hubble, E. (1929). "A Relation between Distance and Radial Velocity among Extra-Galactic Nebulae". PNAS.',
+      'Hawking, S. (1988). "A Brief History of Time".'
+    ],
+    evidence_classification: 'linguistic_eloquence',
+    status: 'verified_scholarly'
+  },
+  {
+    id: 'embryonic-development',
+    slug: 'stages-of-human-embryo',
+    title_en: 'Stages of Human Embryonic Development',
+    title_bn: 'মানব ভ্রূণের ক্রমান্বয়িক বিকাশ',
+    category: 'embryology',
+    category_display_en: 'Developmental Biology',
+    category_display_bn: 'ভ্রূণবিদ্যা ও জীববিজ্ঞান',
+    ayahs: [
+      {
+        surah: 23,
+        ayah: 12,
+        text_ar: 'وَلَقَدْ خَلَقْنَا ٱلْإِنسَٰنَ مِن سُلَٰلَةٍۢ مِّن طِينٍۢ',
+        translation_en: 'And certainly did We create man from an extract of clay.',
+        translation_bn: 'আর নিশ্চয় আমি মানুষকে মাটির সারাংশ থেকে সৃষ্টি করেছি।'
+      },
+      {
+        surah: 23,
+        ayah: 13,
+        text_ar: 'ثُمَّ جَعَلْنَٰهُ نُطْفَةًۭ فِى قَرَارٍۢ مَّكِينٍۢ',
+        translation_en: 'Then We placed him as a sperm-drop in a firm lodging.',
+        translation_bn: 'অতঃপর আমি তাকে শুক্রবিন্দুরূপে এক নিরাপদ আধারে স্থাপন করেছি।'
+      },
+      {
+        surah: 23,
+        ayah: 14,
+        text_ar: 'ثُمَّ خَلَقْنَا ٱلنُّطْفَةَ عَلَقَةًۭ فَخَلَقْنَا ٱلْعَلَقَةَ مُضْغَةًۭ فَخَلَقْنَا ٱلْمُضْغَةَ عِظَٰمًۭا فَكَسَوْنَا ٱلْعِظَٰمَ لَحْمًۭا ثُمَّ أَنشَأْنَٰهُ خَلْقًا ءَاخَرَ ۚ فَتَبَارَكَ ٱللَّهُ أَحْسَنُ ٱلْخَٰلِقِينَ',
+        translation_en: 'Then We made the sperm-drop into a clinging clot, and We made the clot into a lump [of flesh], and We made [from] the lump, bones, and We covered the bones with flesh; then We developed him into another creation. So blessed is Allah, the best of creators.',
+        translation_bn: 'অতঃপর আমি শুক্রবিন্দুকে পরিণত করি ‘আলাকায়’ (ঝুলন্ত বস্তু), পরে ‘আলাকা’কে পিণ্ডে এবং পিণ্ডকে অস্থিপঞ্জরে, অতঃপর অস্থিপঞ্জরকে মাংস দ্বারা ঢেকে দিই; অবশেষে তাকে রূপ দিই এক নতুন সৃষ্টিতে। অতএব শ্রেষ্ঠ স্রষ্টা আল্লাহ পরম কল্যাণময়।'
+      }
+    ],
+    explanation_en: 'The terms "Nutfah" (drop), "‘Alaqah" (clinging suspended substance/leech-like clot), and "Mudghah" (chewed lump appearance) correspond with uncanny fidelity to early blastocyst implantation and somite formation.',
+    explanation_bn: 'কুরআনে বর্ণিত "নুৎফা" (মিশ্রিত বিন্দু), "আলাকা" (জরায়ুর গায়ে আটকে থাকা জোঁকের ন্যায় ঝুলন্ত পিণ্ড) এবং "মুদগাহ" (দাঁত দিয়ে চিবানো মাংসের মতো সোমাইটযুক্ত আকৃতি) মানবভ্রূণের প্রাথমিক পর্যায়ের নিখুঁত রূপকল্প প্রকাশ করে।',
+    scholarly_perspective_en: 'Prof. Keith L. Moore (Professor Emeritus of Anatomy, University of Toronto) studied these Quranic descriptions in 1981 and observed that prior to the invention of the microscope in the 17th century, the early stages could not have been visually determined by human eye.',
+    scholarly_perspective_bn: 'টরন্টো বিশ্ববিদ্যালয়ের এনাটমির অধ্যাপক কেইথ এল. মুর ১৯৮১ সালে উল্লেখ করেন যে, সপ্তদশ শতাব্দীতে মাইক্রোস্কোপ আবিষ্কারের পূর্বে মানুষের চর্মচক্ষে ভ্রূণের এই অভ্যন্তরীণ সূক্ষ্ম রূপ পর্যবেক্ষণ করা অসম্ভব ছিল।',
+    scientific_references: [
+      'Moore, K.L., Persaud, T.V.N., & Torchia, M.G. (2015). "The Developing Human: Clinically Oriented Embryology". Elsevier.',
+      'Al-Bar, M.A. (1986). "Human Development as Revealed in the Holy Quran and Hadith".'
+    ],
+    evidence_classification: 'established_observation',
+    status: 'verified_scholarly'
+  },
+  {
+    id: 'mountains-as-pegs',
+    slug: 'mountains-and-continental-roots',
+    title_en: 'Mountains as Pegs (Isostasy)',
+    title_bn: 'পর্বতমালা: কীলক ও ভারসাম্য',
+    category: 'geology',
+    category_display_en: 'Geology & Geophysics',
+    category_display_bn: 'ভূতত্ত্ব ও ভূ-পদার্থবিজ্ঞান',
+    ayahs: [
+      {
+        surah: 78,
+        ayah: 6,
+        text_ar: 'أَلَمْ نَجْعَلِ ٱلْأَرْضَ مِهَٰدًۭا',
+        translation_en: 'Have We not made the earth a resting place?',
+        translation_bn: 'আমি কি যমীনকে শয্যা সদৃশ করিনি?'
+      },
+      {
+        surah: 78,
+        ayah: 7,
+        text_ar: 'وَٱلْجِبَالَ أَوْتَادًۭا',
+        translation_en: 'And the mountains as pegs?',
+        translation_bn: 'এবং পর্বতমালাকে কীলক (খুঁটি)?'
+      },
+      {
+        surah: 21,
+        ayah: 31,
+        text_ar: 'وَجَعَلْنَا فِى ٱلْأَرْضِ رَوَٰسِىَ أَن تَمِيدَ بِهِمْ',
+        translation_en: 'And We placed within the earth firmly set mountains, lest it should shake with them.',
+        translation_bn: 'এবং আমি পৃথিবীতে দৃঢ় পর্বতমালা স্থাপন করেছি যাতে তা তাদের নিয়ে হেলে না যায়।'
+      }
+    ],
+    explanation_en: 'The word "Awtad" (plural of watad) means stakes or tent pegs driven deep into the soil with only a portion showing above ground. Geophysical Airy-Heiskanen isostasy establishes that mountain chains possess deep continental crustal roots penetrating deep into the lithosphere.',
+    explanation_bn: 'আরবি "আওতাদ" হলো তাঁবুর এমন খুঁটি যার সিংহভাগ মাটির গভীরে প্রোথিত থাকে। ভূতাত্ত্বিক বিজ্ঞানের আইসোস্ট্যাসি (Isostasy) নীতি প্রমাণ করে যে পাহাড়ের দৃশ্যমান অংশের চেয়েও গভীরতর শিকড় বা মূল ভূত্বকের গভীরে নিমজ্জিত থেকে ভূ-ভারসাম্য রক্ষা করে।',
+    scholarly_perspective_en: 'Scholars urge balanced reflection: the primary spiritual message is appreciating God stabilization of the earth for human habitation, while recognizing the remarkable physical imagery of pegs.',
+    scholarly_perspective_bn: 'উলামায়ে কেরাম নির্দেশ করেন যে এর মূল উদ্দেশ্য হলো মানব বসবাসের উপযোগী সুদৃঢ় পৃথিবী সৃষ্টির শোকর আদায় করা এবং খুঁটি সদৃশ গঠনকে এক গভীর চিন্তার উপাদান হিসেবে গ্রহণ করা।',
+    scientific_references: [
+      'Tarbuck, E.J., & Lutgens, F.K. (2014). "Earth: An Introduction to Physical Geology". Pearson.',
+      'Cazenave, A. et al. (1989). "Geoid anomalies and the structure of oceanic and continental lithosphere".'
+    ],
+    evidence_classification: 'established_observation',
+    status: 'verified_scholarly'
+  },
+  {
+    id: 'oceanic-barriers',
+    slug: 'internal-waves-and-marine-barriers',
+    title_en: 'Two Seas and Deep Oceanic Darkness',
+    title_bn: 'দুই সমুদ্রের মিলনস্থল ও সমুদ্রগর্ভের অন্ধকার',
+    category: 'oceanology',
+    category_display_en: 'Oceanography',
+    category_display_bn: 'মহাসমুদ্রবিজ্ঞান',
+    ayahs: [
+      {
+        surah: 55,
+        ayah: 19,
+        text_ar: 'مَرَجَ ٱلْبَحْرَيْنِ يَلْتَقِيَانِ',
+        translation_en: 'He released the two seas, meeting [side by side];',
+        translation_bn: 'তিনি দুই দরিয়াকে প্রবাহিত করেছেন যারা পরস্পরের সাথে মিলিত হয়,'
+      },
+      {
+        surah: 55,
+        ayah: 20,
+        text_ar: 'بَيْنَهُمَا بَرْزَخٌۭ لَّا يَبْغِيَانِ',
+        translation_en: 'Between them is a barrier [which] neither of them transgresses.',
+        translation_bn: 'উভয়ের মাঝে রয়েছে এক অন্তরায়, যা তারা অতিক্রম করতে পারে না।'
+      },
+      {
+        surah: 24,
+        ayah: 40,
+        text_ar: 'أَوْ كَظُلُمَٰتٍۢ فِى بَحْرٍۢ لُّجِّىٍّۢ يَغْشَىٰهُ مَوْجٌۭ مِّن فَوْقِهِۦ مَوْجٌۭ مِّن فَوْقِهِۦ سَحَابٌۭ',
+        translation_en: 'Or [they are] like darknesses within an unfathomable sea which is covered by waves, upon which are waves, over which are clouds - darknesses, some of them upon others.',
+        translation_bn: 'অথবা তাদের অবস্থা এক অতল সমুদ্রের অন্ধকারের মতো, যাকে আচ্ছন্ন করে তরঙ্গের ওপর তরঙ্গ, যার ওপর রয়েছে মেঘমালা; অন্ধকারের ওপর অন্ধকার।'
+      }
+    ],
+    explanation_en: 'Modern oceanography reveals that adjacent bodies of water (such as the Mediterranean and Atlantic at Gibraltar) maintain distinct salinity, temperature, and density gradients due to pycnocline and halocline barriers. Furthermore, internal waves exist at density interfaces deep beneath the ocean surface.',
+    explanation_bn: 'আধুনিক সমুদ্রবিজ্ঞান নির্দেশ করে যে ভিন্ন ঘনমাত্রা ও লবণাক্ততার দুটি জলরাশির মিলনস্থলে (যেমন জিব্রাল্টার প্রণালী) প্রাকৃতিক অদৃশ্য অন্তরাল থাকে। তদুপরি অতল সমুদ্রে দৃশ্যমান পৃষ্ঠতরঙ্গের নিচে গভীর অন্তর্বর্তী তরঙ্গ (Internal Waves) এবং সূর্যালোক শূন্য অন্ধকার বিরাজমান।',
+    scholarly_perspective_en: 'Exegetes highlight the literary power of the metaphor: falsehood is compared to deep disorientation in abyssal oceans, with empirical descriptions that desert dwellers of the 7th century had never witnessed.',
+    scholarly_perspective_bn: 'তাফসিরকারকগণ কুফরের বিভ্রান্তিকে অতল সাগরের জটিল অন্ধকারের উপমা হিসেবে ব্যাখ্যা করেছেন, যা তৎকালীন মরুভূমির মানুষের বাস্তব অভিজ্ঞতার বহু ঊর্ধ্বে ছিল।',
+    scientific_references: [
+      'Gross, M.G. (1993). "Oceanography: A View of Earth". Prentice-Hall.',
+      'Apel, J.R. (2002). "Internal waves in the ocean". Principles of Ocean Physics.'
+    ],
+    evidence_classification: 'established_observation',
+    status: 'verified_scholarly'
+  },
+  {
+    id: 'pharaoh-body-preservation',
+    slug: 'preservation-of-pharaoh-body',
+    title_en: 'Preservation of Pharaoh Body',
+    title_bn: 'ফেরাউনের মরদেহ সংরক্ষণ',
+    category: 'history',
+    category_display_en: 'Historical Archaeology',
+    category_display_bn: 'ঐতিহাসিক প্রত্নতত্ত্ব',
+    ayahs: [
+      {
+        surah: 10,
+        ayah: 92,
+        text_ar: 'فَٱلْيَوْمَ نُنَجِّيكَ بِبَدَنِكَ لِتَكُونَ لِمَنْ خَلْفَكَ ءَايَةًۭ ۚ وَإِنَّ كَثِيرًۭا مِّنَ ٱلنَّاسِ عَنْ ءَايَٰتِنَا لَغَٰفِلُونَ',
+        translation_en: 'So today We will save you in body that you may be to those who succeed you a sign. And indeed, many among the people, of Our signs, are heedless.',
+        translation_bn: 'অতএব আজ আমি তোমার দেহটিকে রক্ষা করব, যাতে তুমি তোমার পরবর্তীদের জন্য এক নিদর্শন হতে পার। আর নিশ্চয় মানবজাতির অনেকেই আমার নিদর্শনসমূহের ব্যাপারে উদাসীন।'
+      }
+    ],
+    explanation_en: 'While other drowned despots were lost in antiquity, the Quran uniquely recorded that the specific Pharaoh who chased Moses would have his physical body preserved as an enduring historical sign. In 1898, the mummified remains of Merneptah (often identified as the Exodus Pharaoh) were discovered in the Valley of the Kings.',
+    explanation_bn: 'প্রাচীনকালের অন্যান্য ডুবে যাওয়া শাসকের অস্তিত্ব বিলীন হলেও কুরআন স্পষ্টভাবে ঘোষণা দেয় যে মূসার বিরুদ্ধাচারণকারী ফেরাউনের মৃতদেহ সংরক্ষিত থাকবে। ১৮৯৮ সালে মিশরের রাজাদের উপত্যকায় আবিষ্কৃত মমি ঐতিহাসিক সত্যতার প্রমাণ বহন করে।',
+    scholarly_perspective_en: 'Scholars emphasize that the preservation of the corpse is an empirical historical testimony validating Quranic prophecy, reminding all tyrannical regimes of inevitable divine justice.',
+    scholarly_perspective_bn: 'আলেমগণ উল্লেখ করেন যে অহংকারী ফেরাউনের মরদেহ সংরক্ষিত রাখা পরবর্তী সকল যালেম শাসকের জন্য এক সতর্কবার্তা ও আল্লাহর প্রতিশ্রুতির বাস্তব রূপ।',
+    scientific_references: [
+      'Bucaille, M. (1976). "The Bible, The Qur\'an and Science". Seghers.',
+      'Smith, G.E. (1912). "The Royal Mummies". Institut Français d\'Archéologie Orientale.'
+    ],
+    evidence_classification: 'scholarly_reflection',
+    status: 'verified_scholarly'
+  }
+];
+
+export function getSignBySlug(slug: string): QuranicSign | undefined {
+  return QURANIC_SIGNS_DATA.find((s) => s.slug === slug || s.id === slug);
+}
