@@ -33,10 +33,21 @@ export async function queryAIStudyAssistant(request: AIStudyRequest): Promise<AI
     ayahContext, 
     language = 'en', 
     customApiKey,
-    modelName = 'gemini-2.0-flash'
+    modelName: requestedModel
   } = request;
   
   const isBangla = language === 'bn';
+
+  // Map any legacy or deprecated model names to current working models
+  let activeModel = requestedModel || process.env.GEMINI_MODEL || 'gemini-3.5-flash';
+  if (
+    activeModel.includes('1.5') || 
+    activeModel.includes('2.0') || 
+    activeModel.includes('2.5') || 
+    activeModel === 'gemini-flash-latest'
+  ) {
+    activeModel = 'gemini-3.5-flash';
+  }
 
   // Step 1: Deterministic retrieval of contextual verses & tafsir
   let retrievedContextText = '';
@@ -82,72 +93,81 @@ RULES:
 Context retrieved from Quran database:
 ${retrievedContextText}`;
 
-      // Support Free Gemini Models (Gemini 2.0 Flash / Gemini 1.5 Flash)
-      const selectedGeminiModel = modelName || 'gemini-2.0-flash';
-      const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${selectedGeminiModel}:generateContent?key=${apiKey}`;
-
-      const res = await fetch(
-        apiProvider === 'openai' && !customApiKey
-          ? 'https://api.openai.com/v1/chat/completions'
-          : geminiEndpoint,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            ...(apiProvider === 'openai' && !customApiKey ? { Authorization: `Bearer ${apiKey}` } : {})
-          },
-          body: JSON.stringify(
-            apiProvider === 'openai' && !customApiKey
-              ? {
-                  model: 'gpt-4o-mini',
-                  messages: [
-                    { role: 'system', content: systemInstruction },
-                    { role: 'user', content: query }
-                  ]
-                }
-              : {
-                  contents: [
-                    {
-                      role: 'user',
-                      parts: [
-                        { text: `${systemInstruction}\n\nUser Question: ${query}` }
-                      ]
-                    }
-                  ],
-                  generationConfig: {
-                    temperature: 0.3,
-                    maxOutputTokens: 1024
+      // Function to execute Gemini API call with given model
+      const callGemini = async (model: string) => {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        return fetch(
+          apiProvider === 'openai' && !customApiKey
+            ? 'https://api.openai.com/v1/chat/completions'
+            : endpoint,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(apiProvider === 'openai' && !customApiKey ? { Authorization: `Bearer ${apiKey}` } : {})
+            },
+            body: JSON.stringify(
+              apiProvider === 'openai' && !customApiKey
+                ? {
+                    model: 'gpt-4o-mini',
+                    messages: [
+                      { role: 'system', content: systemInstruction },
+                      { role: 'user', content: query }
+                    ]
                   }
-                }
-          )
-        }
-      );
+                : {
+                    contents: [
+                      {
+                        role: 'user',
+                        parts: [
+                          { text: `${systemInstruction}\n\nUser Question: ${query}` }
+                        ]
+                      }
+                    ],
+                    generationConfig: {
+                      temperature: 0.3,
+                      maxOutputTokens: 4096
+                    }
+                  }
+            )
+          }
+        );
+      };
+
+      // Try primary model (gemini-3.5-flash)
+      let res = await callGemini(activeModel);
+
+      // If primary model hits high demand (503/429) or not found, try gemini-3.5-flash-lite
+      if (!res.ok && activeModel !== 'gemini-3.5-flash-lite') {
+        console.warn(`Model ${activeModel} failed with status ${res.status}. Falling back to gemini-3.5-flash-lite.`);
+        res = await callGemini('gemini-3.5-flash-lite');
+      }
 
       if (res.ok) {
         const json = await res.json();
         const textResponse = 
           apiProvider === 'openai' && !customApiKey
             ? json.choices?.[0]?.message?.content 
-            : json.candidates?.[0]?.content?.parts?.[0]?.text;
+            : json.candidates?.[0]?.content?.parts?.map((p: any) => p.text).filter(Boolean).join('\n');
 
         if (textResponse) {
-          // Parse any citations in response and validate against canonical Surahs
-          const citeMatches = textResponse.match(/\[(\d+):(\d+)\]/g);
-          if (citeMatches) {
-            for (const match of citeMatches) {
-              const [s, a] = match.replace(/[[\]]/g, '').split(':').map(Number);
-              if (validateQuranReference(s, a) && !verifiedReferences.some((r) => r.surah === s && r.ayah === a)) {
-                const fetched = await getSurahAyahs(s);
-                const ayahObj = fetched.find((v) => v.ayah_number === a);
-                if (ayahObj) {
-                  verifiedReferences.push({
-                    surah: s,
-                    ayah: a,
-                    text_ar: ayahObj.text_ar,
-                    translation: isBangla ? ayahObj.translation_bn : ayahObj.translation_en,
-                    relevance: 'Cited by Gemini Assistant'
-                  });
-                }
+          // Parse any citations in response and validate against canonical Surahs: [S:A], (S:A), or S:A
+          const citeRegex = /(?:\[|\(|\b)([1-9]\d{0,2}):([1-9]\d{0,2})(?:\]|\)|\b)/g;
+          let match: RegExpExecArray | null;
+          while ((match = citeRegex.exec(textResponse)) !== null) {
+            const s = Number(match[1]);
+            const a = Number(match[2]);
+            if (s >= 1 && s <= 114 && validateQuranReference(s, a) && !verifiedReferences.some((r) => r.surah === s && r.ayah === a)) {
+              const fetched = await getSurahAyahs(s);
+              const ayahObj = fetched.find((v) => v.ayah_number === a);
+              if (ayahObj) {
+                verifiedReferences.push({
+                  surah: s,
+                  ayah: a,
+                  text_ar: ayahObj.text_ar,
+                  translation: isBangla ? ayahObj.translation_bn : ayahObj.translation_en,
+                  relevance: `Canonical Quran [${s}:${a}] cited by Gemini Assistant`
+                });
               }
             }
           }

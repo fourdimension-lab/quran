@@ -27,7 +27,7 @@ export function AIChatAssistant() {
   
   // Gemini API Configuration
   const [geminiApiKey, setGeminiApiKey] = useState('');
-  const [selectedModel, setSelectedModel] = useState('gemini-2.0-flash');
+  const [selectedModel, setSelectedModel] = useState('gemini-3.5-flash');
   const [showConfig, setShowConfig] = useState(false);
   const [keySaved, setKeySaved] = useState(false);
 
@@ -36,7 +36,11 @@ export function AIChatAssistant() {
       const savedKey = localStorage.getItem('gemini_free_api_key');
       if (savedKey) setGeminiApiKey(savedKey);
       const savedModel = localStorage.getItem('gemini_model');
-      if (savedModel) setSelectedModel(savedModel);
+      if (savedModel && !savedModel.includes('1.5') && !savedModel.includes('2.0') && !savedModel.includes('2.5')) {
+        setSelectedModel(savedModel);
+      } else {
+        setSelectedModel('gemini-3.5-flash');
+      }
     }
   }, []);
 
@@ -103,8 +107,8 @@ export function AIChatAssistant() {
             onClick={() => setShowConfig(!showConfig)}
             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/20 hover:bg-black/30 text-xs font-medium backdrop-blur-xs text-emerald-100 transition-colors"
           >
-            <span className={`w-2 h-2 rounded-full ${geminiApiKey ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-            <span>{geminiApiKey ? 'Gemini 2.0 Flash (Free API Active)' : 'Configure Gemini API'}</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>{geminiApiKey ? 'Gemini 3.5 Flash (Custom Key)' : 'Gemini 3.5 Flash (System Key Active)'}</span>
             {showConfig ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </button>
         </div>
@@ -113,7 +117,7 @@ export function AIChatAssistant() {
           AI Quran Study Assistant
         </h1>
         <p className="text-xs sm:text-sm text-emerald-100 max-w-2xl leading-relaxed">
-          Ask questions to explore thematic connections, linguistic nuances, and classical commentaries across the Holy Quran. Connect your free Google Gemini API key for instant live AI responses grounded in authentic sources.
+          Ask questions to explore thematic connections, linguistic nuances, and classical commentaries across the Holy Quran. Powered by Google Gemini Free API with strict canonical grounding in authentic verses and exegeses.
         </p>
       </div>
 
@@ -141,13 +145,13 @@ export function AIChatAssistant() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="sm:col-span-2 space-y-1">
               <label className="text-[11px] font-semibold text-[var(--muted-foreground)]">
-                Gemini API Key (Free)
+                Gemini API Key (Optional — Server key is already active)
               </label>
               <input
                 type="password"
                 value={geminiApiKey}
                 onChange={(e) => setGeminiApiKey(e.target.value)}
-                placeholder="AIzaSy..."
+                placeholder="AIzaSy... (leave blank to use preconfigured server key)"
                 className="w-full text-xs font-mono p-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-hidden focus:border-[var(--primary)]"
               />
             </div>
@@ -161,8 +165,8 @@ export function AIChatAssistant() {
                 onChange={(e) => setSelectedModel(e.target.value)}
                 className="w-full text-xs p-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold"
               >
-                <option value="gemini-2.0-flash">Gemini 2.0 Flash (Fastest)</option>
-                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Standard)</option>
+                <option value="gemini-3.5-flash">Gemini 3.5 Flash (Recommended)</option>
+                <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash Lite (Fastest)</option>
               </select>
             </div>
           </div>
