@@ -6,11 +6,10 @@ import {
   Pause, 
   BookOpen, 
   Bookmark, 
-  Share2, 
   Copy, 
   Check, 
   Link2,
-  FileText
+  ArrowRight
 } from 'lucide-react';
 import { Ayah, QuranWord } from '@/types/quran';
 import { useAudioPlayer } from '@/lib/audio/audio-player-context';
@@ -74,11 +73,13 @@ export function AyahCard({
   return (
     <div 
       id={`ayah-${ayah.surah_number}-${ayah.ayah_number}`}
-      className={`p-5 sm:p-6 rounded-2xl border transition-all duration-200 ${
+      onClick={() => onOpenTafsir(ayah)}
+      className={`p-5 sm:p-6 rounded-2xl border transition-all duration-200 cursor-pointer ${
         isCurrentPlaying
           ? 'bg-[var(--primary-light)]/40 border-[var(--primary)] shadow-md ring-1 ring-[var(--primary)]'
-          : 'bg-[var(--card)] border-[var(--border)] hover:border-[var(--border)]/80 shadow-xs'
+          : 'bg-[var(--card)] border-[var(--border)] hover:border-[var(--primary)]/60 hover:shadow-md'
       }`}
+      title="Click anywhere on this Ayah to open its Tafsir and Related Ayahs"
     >
       {/* Top Bar: Reference and Actions */}
       <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]/60 text-xs">
@@ -99,7 +100,7 @@ export function AyahCard({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
           <button
             onClick={handleAudioToggle}
             className={`p-1.5 rounded-lg transition-colors ${
@@ -115,7 +116,7 @@ export function AyahCard({
           <button
             onClick={() => onOpenTafsir(ayah)}
             className="p-1.5 rounded-lg text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors"
-            title="Read Tafsir & Study Notes"
+            title="Read Tafsir & Related Ayahs"
           >
             <BookOpen className="w-4 h-4 text-[var(--primary)]" />
           </button>
@@ -155,9 +156,12 @@ export function AyahCard({
             {ayah.words.map((w) => (
               <span
                 key={w.id}
-                onClick={() => onSelectWord(w)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelectWord(w);
+                }}
                 className="inline-flex flex-col items-center group cursor-pointer px-1 py-0.5 rounded-lg hover:bg-[var(--primary-light)] transition-colors"
-                title={`Click for word meaning: ${w.transliteration}`}
+                title={`Click for word morphology: ${w.transliteration}`}
               >
                 <span 
                   className="font-arabic text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors"
@@ -204,6 +208,26 @@ export function AyahCard({
             {ayah.translation_bn}
           </p>
         )}
+      </div>
+
+      {/* Bottom Study Bar: Instant Tap for Tafsir & Related Ayahs */}
+      <div className="flex flex-wrap items-center justify-between pt-3 mt-3 border-t border-[var(--border)]/40 text-xs gap-2">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpenTafsir(ayah);
+          }}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--primary-light)] hover:bg-[var(--primary)] text-[var(--primary)] hover:text-white font-semibold transition-all shadow-2xs group"
+        >
+          <BookOpen className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+          <span>Tafsir & Related Ayahs ({ayah.surah_number}:{ayah.ayah_number})</span>
+          <ArrowRight className="w-3.5 h-3.5 ml-0.5 opacity-80 group-hover:translate-x-0.5 transition-transform" />
+        </button>
+
+        <span className="text-[11px] text-[var(--muted-foreground)]">
+          Tap anywhere on Ayah to view Tafsir & connections
+        </span>
       </div>
     </div>
   );

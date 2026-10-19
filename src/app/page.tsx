@@ -94,6 +94,14 @@ export default function HomePage() {
             </Link>
 
             <Link
+              href="/tafsir"
+              className="px-6 py-3 rounded-2xl bg-[var(--card)] hover:bg-[var(--muted)] border border-[var(--border)] text-[var(--foreground)] text-sm font-semibold flex items-center gap-2 transition-all shadow-xs"
+            >
+              <BookOpen className="w-4 h-4 text-[var(--primary)]" />
+              <span>Tafsir & Related Ayahs</span>
+            </Link>
+
+            <Link
               href="/word-by-word"
               className="px-6 py-3 rounded-2xl bg-[var(--card)] hover:bg-[var(--muted)] border border-[var(--border)] text-[var(--foreground)] text-sm font-semibold flex items-center gap-2 transition-all shadow-xs"
             >
@@ -214,13 +222,28 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           
+          <Link
+            href="/tafsir"
+            className="p-5 rounded-2xl border border-[var(--border)] bg-[var(--card)] hover:border-[var(--primary)] hover:shadow-md transition-all space-y-3 group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <BookOpen className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-[var(--foreground)] group-hover:text-[var(--primary)]">
+              Tafsir & Related Ayahs
+            </h3>
+            <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
+              Exegesis from Ibn Kathir, Ahsanul Bayaan, Jalalayn, and interconnected Ayahs across the Quran.
+            </p>
+          </Link>
+
           <Link
             href="/word-by-word"
             className="p-5 rounded-2xl border border-[var(--border)] bg-[var(--card)] hover:border-[var(--primary)] hover:shadow-md transition-all space-y-3 group"
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 flex items-center justify-center group-hover:scale-105 transition-transform">
               <Layers className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-[var(--foreground)] group-hover:text-[var(--primary)]">

@@ -66,6 +66,7 @@ export function Navbar() {
 
   const navLinks = [
     { href: '/read', labelEn: 'Read Quran', labelBn: 'কুরআন পড়ুন', icon: BookOpen },
+    { href: '/tafsir', labelEn: 'Tafsir & Study', labelBn: 'তাফসীর ও গবেষণা', icon: BookOpen },
     { href: '/word-by-word', labelEn: 'Word-by-Word', labelBn: 'শব্দে শব্দে', icon: Layers },
     { href: '/topics', labelEn: 'Topics', labelBn: 'বিষয়ভিত্তিক', icon: Compass },
     { href: '/miracles', labelEn: 'Signs & Reflection', labelBn: 'নিদর্শন ও তাফাক্কুর', icon: Sparkles },
@@ -98,7 +99,7 @@ export function Navbar() {
 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.slice(0, 6).map((link) => {
+            {navLinks.slice(0, 7).map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
               return (

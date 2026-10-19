@@ -156,10 +156,11 @@ export function QuranReader({ initialSurahNumber = 1 }: QuranReaderProps) {
         onSelectOccurAyah={(s, a) => handleNavigateToAyah(s, a)}
       />
 
-      {/* Tafsir Drawer */}
+      {/* Tafsir & Related Ayahs Unified Drawer */}
       <TafsirDrawer
         ayah={selectedTafsirAyah}
         onClose={() => setSelectedTafsirAyah(null)}
+        onNavigateToAyah={(s, a) => handleNavigateToAyah(s, a)}
         onOpenRelated={() => {
           if (selectedTafsirAyah) {
             setSelectedRelatedAyah({
