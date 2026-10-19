@@ -8,6 +8,8 @@ export interface AIStudyRequest {
   surahContext?: number;
   ayahContext?: number;
   language?: 'en' | 'bn';
+  customApiKey?: string;
+  modelName?: string; // e.g. 'gemini-2.0-flash' | 'gemini-1.5-flash'
 }
 
 /**
@@ -20,12 +22,20 @@ export function validateQuranReference(surah: number, ayah: number): boolean {
 }
 
 /**
- * Provider-independent grounded AI study service.
+ * Provider-independent grounded AI study service with native Google Gemini Free API integration.
  * Interrogates internal authentic datasets first, constructs grounded prompt,
  * and validates all cited verses against the canonical dataset.
  */
 export async function queryAIStudyAssistant(request: AIStudyRequest): Promise<AISearchResult> {
-  const { query, surahContext, ayahContext, language = 'en' } = request;
+  const { 
+    query, 
+    surahContext, 
+    ayahContext, 
+    language = 'en', 
+    customApiKey,
+    modelName = 'gemini-2.0-flash'
+  } = request;
+  
   const isBangla = language === 'bn';
 
   // Step 1: Deterministic retrieval of contextual verses & tafsir
@@ -51,14 +61,18 @@ export async function queryAIStudyAssistant(request: AIStudyRequest): Promise<AI
     }
   }
 
-  // Step 2: Check for configurable LLM API key
-  const apiKey = process.env.AI_API_KEY || process.env.GEMINI_API_KEY || process.env.OPENAI_API_KEY;
-  const apiProvider = process.env.AI_PROVIDER || 'gemini'; // 'gemini' | 'openai' | 'groq' | 'ollama'
+  // Step 2: Resolve Gemini API Key (Custom key from user or Server env)
+  const apiKey = 
+    customApiKey?.trim() || 
+    process.env.GEMINI_API_KEY || 
+    process.env.AI_API_KEY || 
+    process.env.OPENAI_API_KEY;
+
+  const apiProvider = process.env.AI_PROVIDER || 'gemini';
 
   if (apiKey) {
     try {
-      // If external provider is configured, call with strict system prompt
-      const systemPrompt = `You are a reverent, scholarly Islamic research assistant for the Al-Quran web platform.
+      const systemInstruction = `You are a reverent, scholarly Islamic research assistant for the Al-Quran web platform.
 RULES:
 1. Always base explanations on authenticated Quranic verses and classical exegeses.
 2. NEVER invent or hallucinate any Ayah, Hadith, narrator, or scholarly consensus.
@@ -68,25 +82,42 @@ RULES:
 Context retrieved from Quran database:
 ${retrievedContextText}`;
 
-      // Call configurable provider (e.g. OpenAI or Gemini-compatible endpoint)
+      // Support Free Gemini Models (Gemini 2.0 Flash / Gemini 1.5 Flash)
+      const selectedGeminiModel = modelName || 'gemini-2.0-flash';
+      const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${selectedGeminiModel}:generateContent?key=${apiKey}`;
+
       const res = await fetch(
-        apiProvider === 'openai' 
+        apiProvider === 'openai' && !customApiKey
           ? 'https://api.openai.com/v1/chat/completions'
-          : 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey,
+          : geminiEndpoint,
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', ...(apiProvider === 'openai' ? { Authorization: `Bearer ${apiKey}` } : {}) },
+          headers: {
+            'Content-Type': 'application/json',
+            ...(apiProvider === 'openai' && !customApiKey ? { Authorization: `Bearer ${apiKey}` } : {})
+          },
           body: JSON.stringify(
-            apiProvider === 'openai'
+            apiProvider === 'openai' && !customApiKey
               ? {
                   model: 'gpt-4o-mini',
                   messages: [
-                    { role: 'system', content: systemPrompt },
+                    { role: 'system', content: systemInstruction },
                     { role: 'user', content: query }
                   ]
                 }
               : {
-                  contents: [{ role: 'user', parts: [{ text: `${systemPrompt}\n\nUser Question: ${query}` }] }]
+                  contents: [
+                    {
+                      role: 'user',
+                      parts: [
+                        { text: `${systemInstruction}\n\nUser Question: ${query}` }
+                      ]
+                    }
+                  ],
+                  generationConfig: {
+                    temperature: 0.3,
+                    maxOutputTokens: 1024
+                  }
                 }
           )
         }
@@ -95,7 +126,7 @@ ${retrievedContextText}`;
       if (res.ok) {
         const json = await res.json();
         const textResponse = 
-          apiProvider === 'openai' 
+          apiProvider === 'openai' && !customApiKey
             ? json.choices?.[0]?.message?.content 
             : json.candidates?.[0]?.content?.parts?.[0]?.text;
 
@@ -114,7 +145,7 @@ ${retrievedContextText}`;
                     ayah: a,
                     text_ar: ayahObj.text_ar,
                     translation: isBangla ? ayahObj.translation_bn : ayahObj.translation_en,
-                    relevance: 'Cited by assistant'
+                    relevance: 'Cited by Gemini Assistant'
                   });
                 }
               }
@@ -129,9 +160,12 @@ ${retrievedContextText}`;
               : 'Scholarly Notice: This is an educational synthesis grounded in authentic sources and does not constitute a formal legal ruling (Fatwa). Consult qualified Islamic scholars for personal legal determinations.'
           };
         }
+      } else {
+        const errJson = await res.json().catch(() => null);
+        console.warn('Gemini API call returned non-200, falling back to local grounded exegesis:', errJson);
       }
     } catch (apiErr) {
-      console.warn('AI API query failed, falling back to grounded rule engine:', apiErr);
+      console.warn('AI API query error, falling back to grounded rule engine:', apiErr);
     }
   }
 
@@ -186,7 +220,6 @@ Classical scholars emphasize that this verse anchors core principles of monothei
       : `Scholarly inquiry regarding "${query}":
 The Holy Quran provides timeless foundational wisdom emphasizing justice, compassionate mercy, ethical conduct, and intellectual contemplation. Explore the cross-references and verified classical commentaries below for in-depth study.`;
     
-    // Add Al-Fatihah as standard anchor reference if none exists
     if (verifiedReferences.length === 0) {
       const fatihah = await getSurahAyahs(1);
       verifiedReferences.push({

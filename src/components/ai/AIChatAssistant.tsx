@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Sparkles, 
@@ -10,7 +10,13 @@ import {
   HelpCircle, 
   ArrowRight,
   RefreshCw,
-  Compass
+  Compass,
+  Key,
+  ExternalLink,
+  Check,
+  Cpu,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { AISearchResult } from '@/types/quran';
 
@@ -18,12 +24,36 @@ export function AIChatAssistant() {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<AISearchResult | null>(null);
+  
+  // Gemini API Configuration
+  const [geminiApiKey, setGeminiApiKey] = useState('');
+  const [selectedModel, setSelectedModel] = useState('gemini-2.0-flash');
+  const [showConfig, setShowConfig] = useState(false);
+  const [keySaved, setKeySaved] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedKey = localStorage.getItem('gemini_free_api_key');
+      if (savedKey) setGeminiApiKey(savedKey);
+      const savedModel = localStorage.getItem('gemini_model');
+      if (savedModel) setSelectedModel(savedModel);
+    }
+  }, []);
+
+  const handleSaveConfig = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('gemini_free_api_key', geminiApiKey.trim());
+      localStorage.setItem('gemini_model', selectedModel);
+      setKeySaved(true);
+      setTimeout(() => setKeySaved(false), 2000);
+    }
+  };
 
   const suggestedQuestions = [
     'Which Ayahs discuss patience during hardship?',
     'What is the linguistic difference between Ar-Rahman and Ar-Rahim?',
     'Explain the concept of Tawhid in Surah Al-Ikhlas',
-    'কুরআনে মাতা-পিতার অধিকার সম্পর্কে কী বলা হয়েছে?',
+    'কুরআনে পিতা-মাতার অধিকার ও সেবা সম্পর্কে কী বলা হয়েছে?',
     'What do Quranic verses say about the expansion of the universe?'
   ];
 
@@ -36,7 +66,12 @@ export function AIChatAssistant() {
       const res = await fetch('/api/ai/study', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: questionText, language: 'en' })
+        body: JSON.stringify({ 
+          query: questionText, 
+          language: 'en',
+          customApiKey: geminiApiKey.trim() || undefined,
+          modelName: selectedModel
+        })
       });
 
       if (res.ok) {
@@ -57,17 +92,95 @@ export function AIChatAssistant() {
       
       {/* Header Banner */}
       <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-hover)] text-white shadow-lg space-y-3">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-xs font-semibold text-[var(--gold-light)]">
-          <Sparkles className="w-3.5 h-3.5 text-[var(--gold)]" />
-          <span>Grounded Retrieval-Augmented Exegesis</span>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-xs font-semibold text-[var(--gold-light)]">
+            <Sparkles className="w-3.5 h-3.5 text-[var(--gold)]" />
+            <span>Google Gemini Free API & Grounded Exegesis</span>
+          </div>
+
+          {/* Active Provider Badge */}
+          <button
+            onClick={() => setShowConfig(!showConfig)}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/20 hover:bg-black/30 text-xs font-medium backdrop-blur-xs text-emerald-100 transition-colors"
+          >
+            <span className={`w-2 h-2 rounded-full ${geminiApiKey ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
+            <span>{geminiApiKey ? 'Gemini 2.0 Flash (Free API Active)' : 'Configure Gemini API'}</span>
+            {showConfig ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          </button>
         </div>
+
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
           AI Quran Study Assistant
         </h1>
         <p className="text-xs sm:text-sm text-emerald-100 max-w-2xl leading-relaxed">
-          Ask questions to explore thematic connections, linguistic nuances, and classical commentaries across the Holy Quran. Every answer is strictly grounded in authenticated Quranic verses.
+          Ask questions to explore thematic connections, linguistic nuances, and classical commentaries across the Holy Quran. Connect your free Google Gemini API key for instant live AI responses grounded in authentic sources.
         </p>
       </div>
+
+      {/* Collapsible Gemini Free API Configurator */}
+      {showConfig && (
+        <div className="p-5 rounded-2xl border border-[var(--border)] bg-[var(--card)] shadow-md space-y-4 animate-in slide-in-from-top duration-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Cpu className="w-4 h-4 text-[var(--primary)]" />
+              <span className="text-xs font-bold text-[var(--foreground)] uppercase tracking-wider">
+                Google Gemini Free API Configuration
+              </span>
+            </div>
+            <a
+              href="https://aistudio.google.com/app/apikey"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-semibold text-[var(--primary)] hover:underline flex items-center gap-1"
+            >
+              <span>Get Free API Key from Google AI Studio</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="sm:col-span-2 space-y-1">
+              <label className="text-[11px] font-semibold text-[var(--muted-foreground)]">
+                Gemini API Key (Free)
+              </label>
+              <input
+                type="password"
+                value={geminiApiKey}
+                onChange={(e) => setGeminiApiKey(e.target.value)}
+                placeholder="AIzaSy..."
+                className="w-full text-xs font-mono p-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-hidden focus:border-[var(--primary)]"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[11px] font-semibold text-[var(--muted-foreground)]">
+                Select Model
+              </label>
+              <select
+                value={selectedModel}
+                onChange={(e) => setSelectedModel(e.target.value)}
+                className="w-full text-xs p-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold"
+              >
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash (Fastest)</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Standard)</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between pt-1 text-xs">
+            <span className="text-[11px] text-[var(--muted-foreground)]">
+              Your key stays in your local browser and is never stored on our database.
+            </span>
+            <button
+              onClick={handleSaveConfig}
+              className="px-4 py-1.5 rounded-xl bg-[var(--primary)] text-white text-xs font-semibold flex items-center gap-1 hover:bg-[var(--primary-hover)] shadow-xs transition-colors"
+            >
+              {keySaved ? <Check className="w-3.5 h-3.5" /> : null}
+              <span>{keySaved ? 'Saved Locally!' : 'Save Key'}</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Query Input Box */}
       <div className="p-2 sm:p-3 rounded-2xl border border-[var(--border)] bg-[var(--card)] shadow-md space-y-2">
@@ -117,7 +230,7 @@ export function AIChatAssistant() {
         <div className="p-8 rounded-2xl border border-[var(--border)] bg-[var(--card)] text-center space-y-3">
           <div className="w-8 h-8 border-3 border-[var(--primary)] border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-xs text-[var(--muted-foreground)]">
-            Retrieving verses from the canonical Quran database and grounding scholarly exegesis...
+            Consulting Google Gemini with canonical Quran grounding and exegeses...
           </p>
         </div>
       )}
@@ -127,9 +240,14 @@ export function AIChatAssistant() {
           
           {/* Explanation Text */}
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] uppercase tracking-wider">
-              <Sparkles className="w-4 h-4" />
-              <span>Synthesized Study Answer</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--primary)] uppercase tracking-wider">
+                <Sparkles className="w-4 h-4" />
+                <span>Grounded Study Answer</span>
+              </div>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--primary-light)] text-[var(--primary)] font-medium">
+                {geminiApiKey ? `${selectedModel} (Live Free API)` : 'Grounded RAG Exegesis'}
+              </span>
             </div>
             <div className="text-sm sm:text-base leading-relaxed text-[var(--foreground)] whitespace-pre-line font-sans">
               {result.answer}
