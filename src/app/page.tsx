@@ -638,9 +638,7 @@ export default function HomePage() {
       {/* =========================================================================
           SECTION: ICONIC AZAN COLLECTION (QARI OBAIDULLAH & WORLD MUADDHINS)
          ========================================================================= */}
-      <div id="azan">
-        <AzanPlayerSection />
-      </div>
+      <AzanPlayerSection />
 
       {/* =========================================================================
           SECTION 4: INTERACTIVE STUDY MODULES (Color Coded Feature Cards)

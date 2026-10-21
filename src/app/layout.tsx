@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import React, { Suspense } from 'react';
 import './globals.css';
 import { Navbar } from '@/components/layout/Navbar';
@@ -7,6 +7,13 @@ import { Footer } from '@/components/layout/Footer';
 import { AudioPlayerProvider } from '@/lib/audio/audio-player-context';
 import { LanguageProvider } from '@/lib/language/language-context';
 import { PersistentAudioBar } from '@/components/audio/PersistentAudioBar';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: 'Al-Quran — Intelligent, Interactive Quran Platform',
@@ -34,8 +41,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full antialiased scroll-smooth">
-      <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)] transition-colors">
+    <html lang="en" className="h-full antialiased scroll-smooth overflow-x-hidden">
+      <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)] transition-colors overflow-x-hidden w-full max-w-full relative">
         <LanguageProvider>
           <AudioPlayerProvider>
             <Suspense fallback={<div className="h-16 border-b border-[var(--border)] bg-[var(--background)]" />}>

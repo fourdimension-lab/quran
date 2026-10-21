@@ -24,7 +24,8 @@ import {
   CheckCircle2,
   SlidersHorizontal,
   FileText,
-  LayoutGrid
+  LayoutGrid,
+  Radio
 } from 'lucide-react';
 import { GlobalSearchModal } from '../search/GlobalSearchModal';
 import { SURAHS_DATA } from '@/lib/quran-data/surahs';
@@ -213,25 +214,25 @@ export function Navbar() {
         )}
 
         {/* 2. Main Navigation Bar (Modern Design inspired by user's chosen header architecture) */}
-        <div className="nav-glass border-b border-[var(--border)] transition-colors">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-6 lg:gap-8">
+        <div className="nav-glass border-b border-[var(--border)] transition-colors w-full max-w-full overflow-hidden">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-2 sm:gap-6 lg:gap-8 w-full max-w-full">
             
             {/* Left: Brand Logo & Typography */}
-            <Link href="/" className="flex items-center gap-3 group shrink-0">
-              <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 via-teal-700 to-emerald-950 flex items-center justify-center text-white shadow-md border border-amber-400/50 group-hover:border-amber-400 transition-all duration-300 group-hover:scale-105">
-                  <span className="font-arabic text-xl font-bold text-amber-300 drop-shadow-xs select-none">
+            <Link href="/" className="flex items-center gap-2 sm:gap-3 group shrink-0">
+              <div className="relative shrink-0">
+                <div className="w-8.5 h-8.5 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-600 via-teal-700 to-emerald-950 flex items-center justify-center text-white shadow-md border border-amber-400/50 group-hover:border-amber-400 transition-all duration-300 group-hover:scale-105">
+                  <span className="font-arabic text-base sm:text-xl font-bold text-amber-300 drop-shadow-xs select-none">
                     قرآن
                   </span>
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white dark:border-[#09130e]" />
+                <div className="absolute -bottom-0.5 -right-0.5 w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-emerald-500 border-2 border-white dark:border-[#09130e]" />
               </div>
 
-              <div className="flex flex-col">
-                <span className="text-xl font-black tracking-wider text-[var(--foreground)] uppercase group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-tight">
+              <div className="flex flex-col shrink-0">
+                <span className="text-sm sm:text-xl font-black tracking-wider text-[var(--foreground)] uppercase group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-tight">
                   AL-QURAN
                 </span>
-                <span className="text-[10px] font-bold text-[var(--muted-foreground)] tracking-widest uppercase">
+                <span className="text-[8px] sm:text-[10px] font-bold text-[var(--muted-foreground)] tracking-widest uppercase">
                   القرآن الكريم
                 </span>
               </div>
@@ -277,17 +278,42 @@ export function Navbar() {
             </nav>
 
             {/* Right: Search, Quick Jumper, Toggles, CTA Button, Menu */}
-            <div className="flex items-center gap-3 sm:gap-3.5">
+            <div className="flex items-center gap-1 sm:gap-2.5 shrink-0">
               
-              {/* Minimalist Circular Search Icon (Matching reference image) */}
+              {/* Minimalist Circular Search Icon */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2.5 rounded-full hover:bg-[var(--muted)] text-[var(--foreground)] transition-all cursor-pointer group"
+                className="p-1.5 sm:p-2.5 rounded-full hover:bg-[var(--muted)] text-[var(--foreground)] transition-all cursor-pointer group"
                 title="Search Quran Ayahs, Surahs & Topics (Ctrl+K / Cmd+K)"
                 aria-label="Search Quran"
               >
                 <Search className="w-4 h-4 text-[var(--foreground)] group-hover:scale-110 group-hover:text-emerald-600 dark:group-hover:text-cyan-400 transition-all" />
               </button>
+
+              {/* Quick Listen & Azan on Header (Mobile & Desktop) */}
+              <Link
+                href="/listen"
+                className="p-1.5 sm:p-2.5 rounded-full hover:bg-[var(--muted)] text-emerald-700 dark:text-emerald-400 transition-all cursor-pointer flex items-center justify-center"
+                title={language === 'bn' ? 'কুরআন তিলাওয়াত শুনুন' : 'Listen to Recitations'}
+                aria-label="Listen"
+              >
+                <Volume2 className="w-4 h-4" />
+              </Link>
+
+              <Link
+                href="/#azan"
+                onClick={() => {
+                  if (pathname === '/') {
+                    const azanEl = document.getElementById('azan');
+                    if (azanEl) azanEl.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="p-1.5 sm:p-2.5 rounded-full hover:bg-[var(--muted)] text-amber-600 dark:text-amber-400 transition-all cursor-pointer flex items-center justify-center"
+                title={language === 'bn' ? 'আযান সমগ্র' : 'Azan Collection'}
+                aria-label="Azan"
+              >
+                <Radio className="w-4 h-4" />
+              </Link>
 
               {/* Quick Surah Jumper Popover */}
               <div ref={jumperRef} className="relative hidden sm:block">
@@ -358,10 +384,10 @@ export function Navbar() {
               </div>
 
               {/* Language Switcher Pill (বাং | EN) */}
-              <div className="flex items-center gap-1 p-0.5 sm:p-1 rounded-full border border-[var(--border)] bg-[var(--card)] text-xs font-bold text-[var(--foreground)] shadow-2xs">
+              <div className="flex items-center gap-0.5 p-0.5 rounded-full border border-[var(--border)] bg-[var(--card)] text-xs font-bold text-[var(--foreground)] shadow-2xs">
                 <button
                   onClick={() => setLanguage('bn')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold transition-all cursor-pointer ${
                     language === 'bn'
                       ? 'bg-emerald-700 text-white shadow-xs'
                       : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]'
@@ -372,7 +398,7 @@ export function Navbar() {
                 </button>
                 <button
                   onClick={() => setLanguage('en')}
-                  className={`px-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold transition-all cursor-pointer ${
                     language === 'en'
                       ? 'bg-emerald-700 text-white shadow-xs'
                       : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)]'
@@ -386,21 +412,21 @@ export function Navbar() {
               {/* Theme Switcher */}
               <button
                 onClick={toggleTheme}
-                className="p-2.5 rounded-full border border-[var(--border)] bg-[var(--card)] hover:border-amber-400/50 text-[var(--foreground)] transition-all shadow-2xs group cursor-pointer"
+                className="p-1.5 sm:p-2 rounded-full border border-[var(--border)] bg-[var(--card)] hover:border-amber-400/50 text-[var(--foreground)] transition-all shadow-2xs group cursor-pointer"
                 title="Toggle Dark / Light Theme"
                 aria-label="Toggle theme"
               >
                 {isDark ? (
-                  <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform" />
+                  <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 group-hover:rotate-45 transition-transform" />
                 ) : (
-                  <Moon className="w-4 h-4 text-emerald-700 group-hover:-rotate-12 transition-transform" />
+                  <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-700 group-hover:-rotate-12 transition-transform" />
                 )}
               </button>
 
-              {/* Signature CTA Button (GET STARTED → matching reference image) */}
+              {/* Signature CTA Button (Hidden on small mobile to prevent overflow) */}
               <Link
                 href={`/read/${progress?.last_read_surah || 1}`}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-emerald-800 hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white text-xs font-black tracking-wider uppercase shadow-md shadow-emerald-900/15 dark:shadow-[0_0_18px_rgba(16,185,129,0.4)] dark:border dark:border-emerald-400/60 hover:scale-105 active:scale-95 transition-all duration-200 group"
+                className="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-full bg-emerald-800 hover:bg-emerald-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white text-xs font-black tracking-wider uppercase shadow-md shadow-emerald-900/15 dark:shadow-[0_0_18px_rgba(16,185,129,0.4)] dark:border dark:border-emerald-400/60 hover:scale-105 active:scale-95 transition-all duration-200 group"
               >
                 <span>{language === 'bn' ? 'শুরু করুন' : 'GET STARTED'}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -409,7 +435,7 @@ export function Navbar() {
               {/* Far Right: 9-Dots / Hamburger Menu Icon */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2.5 rounded-xl border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors cursor-pointer"
+                className="p-1.5 sm:p-2.5 rounded-xl border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors cursor-pointer"
                 aria-label="Toggle navigation drawer"
                 title="Navigation & Features"
               >
@@ -553,15 +579,22 @@ export function Navbar() {
 
               <Link
                 href="/#azan"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 p-3 rounded-xl border border-[var(--border)] hover:border-amber-500 bg-[var(--muted)]/40 hover:bg-amber-500/10 transition-colors"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  if (pathname === '/') {
+                    const el = document.getElementById('azan');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="flex items-center gap-3 p-3 rounded-xl border border-amber-500/40 hover:border-amber-500 bg-amber-500/10 hover:bg-amber-500/20 transition-colors"
               >
-                <div className="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-                  <Volume2 className="w-4 h-4 text-amber-600" />
+                <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                  <Radio className="w-4 h-4 text-amber-600 dark:text-amber-400 animate-pulse" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-[var(--foreground)]">
-                    {language === 'bn' ? 'আযান সমগ্র' : 'Azan Collection'}
+                  <div className="text-xs font-bold text-[var(--foreground)] flex items-center gap-1.5">
+                    <span>{language === 'bn' ? 'আযান সমগ্র' : 'Azan Collection'}</span>
+                    <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500 text-white font-extrabold">NEW</span>
                   </div>
                   <div className="text-[10px] text-[var(--muted-foreground)]">Qari Obaidullah & Muaddhins</div>
                 </div>

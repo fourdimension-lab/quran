@@ -20,7 +20,8 @@ import {
   Filter,
   Flame,
   Layers,
-  Compass
+  Compass,
+  Radio
 } from 'lucide-react';
 import { RECITERS_DATA } from '@/lib/quran-data/reciters';
 import { SURAHS_DATA, getSurahByNumber } from '@/lib/quran-data/surahs';
@@ -28,6 +29,7 @@ import { useAudioPlayer } from '@/lib/audio/audio-player-context';
 import { getSurahAyahs } from '@/lib/quran-data/quran-service';
 import { useLanguage } from '@/lib/language/language-context';
 import { Ayah } from '@/types/quran';
+import { AzanPlayerSection } from '@/components/audio/AzanPlayerSection';
 
 // Authentic scholarly Quran word counts for all 114 Surahs
 const SURAH_WORD_COUNTS: Record<number, number> = {
@@ -205,9 +207,26 @@ export default function ListenPage() {
         <div className="absolute top-1/2 left-10 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-6xl mx-auto space-y-4 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-900/80 border border-emerald-700/60 text-emerald-300 text-xs font-bold tracking-wider uppercase shadow-xs">
-            <Volume2 className="w-3.5 h-3.5 text-amber-400" />
-            <span>{t('পবিত্র কুরআন তিলাওয়াত ও অডিও স্টুডিও', 'High-Fidelity Quran Recitation Studio')}</span>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-900/80 border border-emerald-700/60 text-emerald-300 text-xs font-bold tracking-wider uppercase shadow-xs">
+              <Volume2 className="w-3.5 h-3.5 text-amber-400" />
+              <span>{t('পবিত্র কুরআন তিলাওয়াত ও অডিও স্টুডিও', 'High-Fidelity Quran Recitation Studio')}</span>
+            </div>
+
+            <a
+              href="#azan"
+              onClick={(e) => {
+                const el = document.getElementById('azan');
+                if (el) {
+                  e.preventDefault();
+                  el.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-300 text-xs font-bold transition-all shadow-xs"
+            >
+              <Radio className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+              <span>{t('আযান সমগ্র ♫', 'Azan Collection ♫')}</span>
+            </a>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
@@ -691,6 +710,13 @@ export default function ListenPage() {
 
         </div>
 
+      </div>
+
+      {/* ============================================================== */}
+      {/* ICONIC AZAN COLLECTION SECTION                                 */}
+      {/* ============================================================== */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <AzanPlayerSection />
       </div>
 
     </div>

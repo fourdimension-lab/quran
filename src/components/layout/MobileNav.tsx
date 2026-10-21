@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BookOpen, Layers, Compass, Sparkles, Bookmark } from 'lucide-react';
+import { BookOpen, FileText, Volume2, Radio, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/lib/language/language-context';
 
 export function MobileNav() {
@@ -12,10 +12,10 @@ export function MobileNav() {
 
   const items = [
     { href: '/read', label: language === 'bn' ? 'পড়ুন' : 'Read', icon: BookOpen },
-    { href: '/word-by-word', label: language === 'bn' ? 'শব্দার্থ' : 'Words', icon: Layers },
-    { href: '/topics', label: language === 'bn' ? 'বিষয়' : 'Topics', icon: Compass },
-    { href: '/ai-study', label: language === 'bn' ? 'এআই গবেষণা' : 'AI Study', icon: Sparkles },
-    { href: '/study', label: language === 'bn' ? 'লাইব্রেরি' : 'Library', icon: Bookmark },
+    { href: '/tafsir', label: language === 'bn' ? 'তাফসীর' : 'Tafsir', icon: FileText },
+    { href: '/listen', label: language === 'bn' ? 'শুনুন' : 'Listen', icon: Volume2 },
+    { href: '/#azan', label: language === 'bn' ? 'আযান' : 'Azan', icon: Radio },
+    { href: '/ai-study', label: language === 'bn' ? 'এআই' : 'AI Study', icon: Sparkles },
   ];
 
   return (
@@ -30,6 +30,15 @@ export function MobileNav() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={(e) => {
+                if (item.href === '/#azan') {
+                  const azanEl = document.getElementById('azan');
+                  if (azanEl) {
+                    e.preventDefault();
+                    azanEl.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }
+              }}
               className={`flex flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors relative ${
                 isActive 
                   ? isAI

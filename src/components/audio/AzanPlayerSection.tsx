@@ -258,7 +258,7 @@ export function AzanPlayerSection() {
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6">
+    <section id="azan" className="scroll-mt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 w-full max-w-full overflow-hidden">
       
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[var(--border)] pb-4">
@@ -279,7 +279,7 @@ export function AzanPlayerSection() {
         </div>
 
         {/* Buttons for Azan Du'a & Word Meaning */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
           <button
             onClick={() => setShowWords(!showWords)}
             className="px-3 py-1.5 rounded-full border border-emerald-300/80 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 bg-emerald-50/70 dark:bg-emerald-950/40 text-xs font-bold hover:bg-emerald-100 dark:hover:bg-emerald-900 transition-colors flex items-center gap-1.5 cursor-pointer"
@@ -302,33 +302,33 @@ export function AzanPlayerSection() {
 
       {/* Expandable Azan Words Box */}
       {showWords && (
-        <div className="p-5 rounded-3xl bg-emerald-50/60 dark:bg-[#0c1c14] border border-emerald-300/70 dark:border-emerald-800/60 space-y-3 animate-in fade-in duration-200 text-xs">
+        <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-emerald-50/60 dark:bg-[#0c1c14] border border-emerald-300/70 dark:border-emerald-800/60 space-y-3 animate-in fade-in duration-200 text-xs">
           <div className="font-bold text-sm text-emerald-900 dark:text-emerald-200 flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-emerald-600" />
             <span>{t('পবিত্র আযানের বাণী ও বাংলা অর্থ', 'Phrases of Azan & Meaning')}</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-1">
-            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex items-center justify-between">
+            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex flex-wrap items-center justify-between gap-2">
               <span className="font-bangla text-emerald-950 dark:text-emerald-100">১. আল্লাহ সর্বশ্রেষ্ঠ (৪ বার)</span>
               <span className="font-arabic text-base font-bold text-emerald-700 dark:text-emerald-300" dir="rtl">اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ</span>
             </div>
-            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex items-center justify-between">
+            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex flex-wrap items-center justify-between gap-2">
               <span className="font-bangla text-emerald-950 dark:text-emerald-100">২. সাক্ষ্য দিচ্ছি আল্লাহ ছাড়া কোনো সত্য উপাস্য নেই (২ বার)</span>
               <span className="font-arabic text-base font-bold text-emerald-700 dark:text-emerald-300" dir="rtl">أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ</span>
             </div>
-            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex items-center justify-between">
+            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex flex-wrap items-center justify-between gap-2">
               <span className="font-bangla text-emerald-950 dark:text-emerald-100">৩. সাক্ষ্য দিচ্ছি মুহাম্মদ (সা.) আল্লাহর রাসূল (২ বার)</span>
               <span className="font-arabic text-base font-bold text-emerald-700 dark:text-emerald-300" dir="rtl">أَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللَّهِ</span>
             </div>
-            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex items-center justify-between">
+            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex flex-wrap items-center justify-between gap-2">
               <span className="font-bangla text-emerald-950 dark:text-emerald-100">৪. সালাতের দিকে এসো (২ বার)</span>
               <span className="font-arabic text-base font-bold text-emerald-700 dark:text-emerald-300" dir="rtl">حَيَّ عَلَى الصَّلَاةِ</span>
             </div>
-            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex items-center justify-between">
+            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex flex-wrap items-center justify-between gap-2">
               <span className="font-bangla text-emerald-950 dark:text-emerald-100">৫. কল্যাণের দিকে এসো (২ বার)</span>
               <span className="font-arabic text-base font-bold text-emerald-700 dark:text-emerald-300" dir="rtl">حَيَّ عَلَى الْفَلَاحِ</span>
             </div>
-            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex items-center justify-between">
+            <div className="p-3 rounded-xl bg-white/80 dark:bg-black/20 border border-emerald-200/60 dark:border-emerald-900/40 flex flex-wrap items-center justify-between gap-2">
               <span className="font-bangla text-emerald-950 dark:text-emerald-100">ফজরে: ঘুমের চেয়ে সালাত উত্তম (২ বার)</span>
               <span className="font-arabic text-base font-bold text-amber-600 dark:text-amber-400" dir="rtl">الصَّلَاةُ خَيْرٌ مِنَ النَّوْمِ</span>
             </div>
@@ -338,18 +338,18 @@ export function AzanPlayerSection() {
 
       {/* Expandable Du'a After Azan Box */}
       {showAzanDua && (
-        <div className="p-5 rounded-3xl bg-amber-50/70 dark:bg-[#1a1409] border border-amber-300/80 dark:border-amber-800/60 space-y-3 animate-in fade-in duration-200 text-xs">
+        <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-amber-50/70 dark:bg-[#1a1409] border border-amber-300/80 dark:border-amber-800/60 space-y-3 animate-in fade-in duration-200 text-xs">
           <div className="font-bold text-sm text-amber-950 dark:text-amber-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-600" />
               <span>{t('আযান সমাপ্তির পরের সুন্নাহ দোয়া ও ফযীলত', 'Du’a After Azan & Virtues')}</span>
             </div>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-200 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-bold">
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-200 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-bold shrink-0">
               সহীহ বুখারী ৪৭১২
             </span>
           </div>
 
-          <p className="font-arabic text-xl sm:text-2xl text-[var(--foreground)] text-right leading-loose py-1" dir="rtl">
+          <p className="font-arabic text-xl sm:text-2xl text-[var(--foreground)] text-right leading-loose py-1 break-words" dir="rtl">
             اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ، وَالصَّلَاةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ
           </p>
 
@@ -367,14 +367,14 @@ export function AzanPlayerSection() {
       )}
 
       {/* Main Interactive Audio Player Dashboard */}
-      <div className="p-6 sm:p-8 rounded-[32px] bg-gradient-to-br from-amber-500/10 via-emerald-500/5 to-teal-500/10 dark:from-amber-950/30 dark:via-[#0c1813] dark:to-emerald-950/30 border-2 border-amber-400/50 dark:border-amber-600/40 shadow-xl space-y-6">
+      <div className="p-4 sm:p-8 rounded-2xl sm:rounded-[32px] bg-gradient-to-br from-amber-500/10 via-emerald-500/5 to-teal-500/10 dark:from-amber-950/30 dark:via-[#0c1813] dark:to-emerald-950/30 border-2 border-amber-400/50 dark:border-amber-600/40 shadow-xl space-y-6 w-full max-w-full overflow-hidden">
         
         {/* Active Track Hero Banner */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-600 to-emerald-600 text-white flex items-center justify-center font-bold shadow-lg shrink-0">
-                <Radio className={`w-8 h-8 sm:w-10 sm:h-10 ${isPlaying ? 'animate-bounce text-amber-200' : 'text-white'}`} />
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+            <div className="relative shrink-0">
+              <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-600 to-emerald-600 text-white flex items-center justify-center font-bold shadow-lg shrink-0">
+                <Radio className={`w-7 h-7 sm:w-10 sm:h-10 ${isPlaying ? 'animate-bounce text-amber-200' : 'text-white'}`} />
               </div>
               {isPlaying && (
                 <span className="absolute -top-1 -right-1 flex h-4 w-4">
@@ -384,25 +384,25 @@ export function AzanPlayerSection() {
               )}
             </div>
 
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-200 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-extrabold uppercase tracking-wider">
+            <div className="space-y-1 min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-200 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-extrabold uppercase tracking-wider shrink-0">
                   {language === 'bn' ? activeTrack.tag_bn : activeTrack.tag_en}
                 </span>
-                <span className="text-xs text-[var(--muted-foreground)] flex items-center gap-1">
+                <span className="text-xs text-[var(--muted-foreground)] flex items-center gap-1 shrink-0">
                   <Clock className="w-3 h-3" />
                   <span>{activeTrack.duration}</span>
                 </span>
               </div>
               
-              <h3 className="text-lg sm:text-2xl font-black text-[var(--foreground)] tracking-tight">
+              <h3 className="text-base sm:text-2xl font-black text-[var(--foreground)] tracking-tight break-words">
                 {language === 'bn' ? activeTrack.title_bn : activeTrack.title_en}
               </h3>
               
-              <div className="text-xs sm:text-sm font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
+              <div className="text-xs sm:text-sm font-bold text-emerald-700 dark:text-emerald-400 flex flex-wrap items-center gap-1.5 sm:gap-2">
                 <span>{language === 'bn' ? activeTrack.artist_bn : activeTrack.artist_en}</span>
                 <span className="opacity-40">•</span>
-                <span className="text-[var(--muted-foreground)] font-normal">
+                <span className="text-[var(--muted-foreground)] font-normal truncate">
                   {language === 'bn' ? activeTrack.location_bn : activeTrack.location_en}
                 </span>
               </div>
@@ -410,10 +410,10 @@ export function AzanPlayerSection() {
           </div>
 
           {/* Quick Play/Pause Action Button on Active Track */}
-          <div className="flex items-center gap-3 self-end md:self-center">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 self-start sm:self-auto">
             <button
               onClick={handleRestart}
-              className="p-3 rounded-full bg-white dark:bg-white/10 hover:bg-stone-100 dark:hover:bg-white/20 border border-[var(--border)] text-[var(--foreground)] transition-colors shadow-xs cursor-pointer"
+              className="p-2.5 sm:p-3 rounded-full bg-white dark:bg-white/10 hover:bg-stone-100 dark:hover:bg-white/20 border border-[var(--border)] text-[var(--foreground)] transition-colors shadow-xs cursor-pointer"
               title={t('পুনরায় শুরু করুন', 'Restart Track')}
             >
               <RotateCcw className="w-4 h-4" />
@@ -421,16 +421,16 @@ export function AzanPlayerSection() {
 
             <button
               onClick={handleTogglePlay}
-              className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-600 via-amber-500 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95"
+              className="px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-gradient-to-r from-amber-600 via-amber-500 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 text-white font-bold text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95"
             >
               {isPlaying ? (
                 <>
-                  <Pause className="w-5 h-5 fill-current" />
+                  <Pause className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
                   <span>{t('বিরতি দিন', 'Pause')}</span>
                 </>
               ) : (
                 <>
-                  <Play className="w-5 h-5 fill-current" />
+                  <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
                   <span>{t('প্লে করুন', 'Play Azan')}</span>
                 </>
               )}
@@ -438,7 +438,7 @@ export function AzanPlayerSection() {
 
             <button
               onClick={handleToggleMute}
-              className="p-3 rounded-full bg-white dark:bg-white/10 hover:bg-stone-100 dark:hover:bg-white/20 border border-[var(--border)] text-[var(--foreground)] transition-colors shadow-xs cursor-pointer"
+              className="p-2.5 sm:p-3 rounded-full bg-white dark:bg-white/10 hover:bg-stone-100 dark:hover:bg-white/20 border border-[var(--border)] text-[var(--foreground)] transition-colors shadow-xs cursor-pointer"
               title={isMuted ? t('শব্দ চালু করুন', 'Unmute') : t('শব্দ বন্ধ করুন', 'Mute')}
             >
               {isMuted ? <VolumeX className="w-4 h-4 text-rose-500" /> : <Volume2 className="w-4 h-4" />}

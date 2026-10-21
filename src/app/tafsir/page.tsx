@@ -247,10 +247,10 @@ function TafsirContent() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+    <div className="max-w-5xl mx-auto px-3 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8 w-full max-w-full overflow-hidden">
       
       {/* Header Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-hover)] text-white shadow-lg space-y-3 relative overflow-hidden">
+      <div className="p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-hover)] text-white shadow-lg space-y-3 relative overflow-hidden">
         <div className="absolute inset-0 bg-islamic-pattern opacity-10" />
         <div className="relative z-10 space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-xs font-semibold text-[var(--gold-light)] mb-1">
@@ -258,7 +258,7 @@ function TafsirContent() {
             <span>তাফসীর ও প্রাসঙ্গিক আয়াত • Tafsir & Cross-Quranic Connections</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
+          <h1 className="text-xl sm:text-4xl font-bold tracking-tight">
             সূরাভিত্তিক তাফসীর ও গবেষণা (Tafsir by Surah)
           </h1>
           <p className="text-xs sm:text-sm text-emerald-100 max-w-2xl leading-relaxed">
@@ -268,18 +268,18 @@ function TafsirContent() {
       </div>
 
       {/* Surah Selector & Information Bar */}
-      <div className="p-4 sm:p-5 rounded-2xl border border-[var(--border)] bg-[var(--card)] shadow-xs flex flex-wrap items-center justify-between gap-4">
+      <div className="p-3.5 sm:p-5 rounded-2xl border border-[var(--border)] bg-[var(--card)] shadow-xs flex flex-wrap items-center justify-between gap-3 sm:gap-4">
         
         {/* Dropdown Selector */}
-        <div className="flex items-center gap-3">
-          <div className="space-y-1">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="space-y-1 w-full sm:w-auto">
             <span className="text-[11px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider block">
               সূরা নির্বাচন করুন (Select Surah)
             </span>
             <select
               value={surahNumber}
               onChange={(e) => handleSelectSurah(Number(e.target.value))}
-              className="text-xs sm:text-sm font-semibold p-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-hidden focus:border-[var(--primary)] min-w-[240px]"
+              className="text-xs sm:text-sm font-semibold p-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] focus:outline-hidden focus:border-[var(--primary)] w-full sm:w-auto min-w-0 sm:min-w-[240px] max-w-full"
             >
               {SURAHS_DATA.map((s) => (
                 <option key={s.number} value={s.number}>
@@ -291,24 +291,24 @@ function TafsirContent() {
         </div>
 
         {/* Navigation Controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full sm:w-auto justify-between sm:justify-start">
           <button
             onClick={() => handleSelectSurah(surahNumber - 1)}
             disabled={surahNumber <= 1}
-            className="px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--muted)] disabled:opacity-40 text-xs font-semibold flex items-center gap-1 transition-colors"
+            className="px-2.5 sm:px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--muted)] disabled:opacity-40 text-xs font-semibold flex items-center gap-1 transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
             <span className="hidden sm:inline">পূর্ববর্তী সূরা (Prev)</span>
           </button>
 
-          <span className="px-3 py-1.5 rounded-xl bg-[var(--primary-light)] text-[var(--primary)] font-bold text-xs">
+          <span className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-[var(--primary-light)] text-[var(--primary)] font-bold text-xs">
             সূরা {surahNumber} / 114
           </span>
 
           <button
             onClick={() => handleSelectSurah(surahNumber + 1)}
             disabled={surahNumber >= 114}
-            className="px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--muted)] disabled:opacity-40 text-xs font-semibold flex items-center gap-1 transition-colors"
+            className="px-2.5 sm:px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--muted)] disabled:opacity-40 text-xs font-semibold flex items-center gap-1 transition-colors"
           >
             <span className="hidden sm:inline">পরবর্তী সূরা (Next)</span>
             <ChevronRight className="w-4 h-4" />
@@ -316,7 +316,7 @@ function TafsirContent() {
 
           <Link
             href={`/read/${surahNumber}`}
-            className="px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:bg-[var(--muted)] text-[var(--foreground)] text-xs font-semibold flex items-center gap-1 transition-colors ml-1"
+            className="px-2.5 sm:px-3 py-2 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:bg-[var(--muted)] text-[var(--foreground)] text-xs font-semibold flex items-center gap-1 transition-colors"
             title="Read in Quran Reader mode"
           >
             <span>Reader Mode</span>
@@ -326,7 +326,7 @@ function TafsirContent() {
       </div>
 
       {/* Surah Intro & Title Card */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-[var(--card)] border border-[var(--border)] text-center shadow-xs space-y-3 relative overflow-hidden">
+      <div className="p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-[var(--card)] border border-[var(--border)] text-center shadow-xs space-y-3 relative overflow-hidden">
         <div className="space-y-1">
           <span className="text-xs px-3 py-1 rounded-full bg-[var(--primary-light)] text-[var(--primary)] font-bold inline-block">
             {surahMeta.revelation_place === 'Meccan' ? 'মাক্কী সূরা (Meccan)' : 'মাদানী সূরা (Medinan)'} • {surahMeta.verses_count} আয়াত
@@ -382,7 +382,7 @@ function TafsirContent() {
                 ref={(el) => {
                   ayahRefs.current[ayah.ayah_number] = el;
                 }}
-                className={`rounded-3xl border transition-all duration-200 overflow-hidden scroll-mt-24 ${
+                className={`rounded-2xl sm:rounded-3xl border transition-all duration-200 overflow-hidden scroll-mt-24 ${
                   isExpanded
                     ? 'border-emerald-500 bg-[var(--card)] shadow-xl ring-2 ring-emerald-500/30'
                     : 'border-[var(--border)] bg-[var(--card)] hover:border-emerald-400/80 hover:shadow-md'
@@ -391,64 +391,64 @@ function TafsirContent() {
                 {/* Ayah Row Header (Clickable to Toggle Tafsir) */}
                 <div
                   onClick={() => handleAyahClick(ayah.ayah_number)}
-                  className="p-5 sm:p-7 cursor-pointer space-y-5"
+                  className="p-3.5 sm:p-7 cursor-pointer space-y-4 sm:space-y-5"
                   title="Click to view or toggle Tafsir for this Ayah"
                 >
                   {/* Top Reference & Actions */}
-                  <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]/60 text-xs">
-                    <div className="flex items-center gap-2.5">
-                      <div className={`flex items-center justify-center w-8 h-8 rounded-xl font-bold text-xs transition-colors ${
+                  <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3 border-b border-[var(--border)]/60 text-xs">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-xl font-bold text-xs shrink-0 transition-colors ${
                         isExpanded
                           ? 'bg-emerald-600 text-white shadow-md'
                           : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
                       }`}>
                         {ayah.ayah_number}
                       </div>
-                      <span className="font-bold text-sm text-[var(--foreground)]">
+                      <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] truncate">
                         {surahMeta.name_bn} [{surahNumber}:{ayah.ayah_number}]
                       </span>
                       {ayah.sajdah && (
-                        <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold border border-amber-300">
+                        <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold border border-amber-300 shrink-0">
                           সিজদাহ্
                         </span>
                       )}
                     </div>
 
                     {/* Action Tools */}
-                    <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center gap-1 sm:gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                       <button
                         onClick={(e) => handleAudioToggle(ayah.ayah_number, e)}
-                        className={`p-2 rounded-xl transition-colors ${
+                        className={`p-1.5 sm:p-2 rounded-xl transition-colors ${
                           isThisPlaying
                             ? 'bg-emerald-600 text-white shadow-xs'
                             : 'text-[var(--foreground)] hover:bg-[var(--muted)]'
                         }`}
                         title={isThisPlaying ? 'Pause Audio' : 'Play Recitation'}
                       >
-                        {isThisPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                        {isThisPlaying ? <Pause className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                       </button>
 
                       <button
                         onClick={(e) => handleBookmarkToggle(ayah.ayah_number, e)}
-                        className={`p-2 rounded-xl transition-colors ${
+                        className={`p-1.5 sm:p-2 rounded-xl transition-colors ${
                           isBookmarked ? 'text-amber-500 bg-amber-50 dark:bg-amber-950/40' : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)]'
                         }`}
                         title={isBookmarked ? 'বুকমার্ক করা হয়েছে' : 'বুকমার্ক করুন'}
                       >
-                        <Bookmark className="w-4 h-4" fill={isBookmarked ? 'currentColor' : 'none'} />
+                        <Bookmark className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill={isBookmarked ? 'currentColor' : 'none'} />
                       </button>
 
                       <button
                         onClick={(e) => handleCopyAyah(ayah, e)}
-                        className="p-2 rounded-xl text-[var(--muted-foreground)] hover:bg-[var(--muted)] transition-colors"
+                        className="p-1.5 sm:p-2 rounded-xl text-[var(--muted-foreground)] hover:bg-[var(--muted)] transition-colors"
                         title="Copy Ayah and translations"
                       >
-                        {isCopied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                        {isCopied ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                       </button>
 
-                      <div className="ml-2 pl-2 border-l border-[var(--border)] flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
-                        <span>{isExpanded ? 'তাফসীর বন্ধ করুন' : 'তাফসীর দেখুন'}</span>
-                        {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                      <div className="ml-1 sm:ml-2 pl-1.5 sm:pl-2 border-l border-[var(--border)] flex items-center gap-1 text-[11px] sm:text-xs font-bold text-emerald-700 dark:text-emerald-400">
+                        <span>{isExpanded ? 'তাফসীর বন্ধ' : 'তাফসীর'}</span>
+                        {isExpanded ? <ChevronUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                       </div>
                     </div>
                   </div>
@@ -503,7 +503,7 @@ function TafsirContent() {
                 {isExpanded && (
                   <div 
                     id={`tafsir-section-${ayah.ayah_number}`}
-                    className="border-t-2 border-emerald-500/70 bg-gradient-to-b from-stone-50/50 to-[var(--card)] dark:from-stone-900/40 dark:to-[var(--card)] p-5 sm:p-7 space-y-6 animate-in slide-in-from-top-2 duration-200 scroll-mt-24"
+                    className="border-t-2 border-emerald-500/70 bg-gradient-to-b from-stone-50/50 to-[var(--card)] dark:from-stone-900/40 dark:to-[var(--card)] p-3.5 sm:p-7 space-y-4 sm:space-y-6 animate-in slide-in-from-top-2 duration-200 scroll-mt-24 overflow-hidden"
                   >
                     
                     {/* Header */}
@@ -575,7 +575,7 @@ function TafsirContent() {
                     )}
 
                     {/* 4. TAFSIR COMMENTARY BOX (Aesthetic Warm Amber / Golden Scholar Box) */}
-                    <div className="p-5 sm:p-6 rounded-3xl bg-amber-50/70 dark:bg-amber-950/25 border border-amber-200/90 dark:border-amber-800/60 shadow-xs space-y-4">
+                    <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-amber-50/70 dark:bg-amber-950/25 border border-amber-200/90 dark:border-amber-800/60 shadow-xs space-y-4">
                       
                       {/* Box Title & Source Selector */}
                       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-amber-200/80 dark:border-amber-800/40">
