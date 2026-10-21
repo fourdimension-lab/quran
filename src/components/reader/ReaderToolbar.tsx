@@ -55,7 +55,7 @@ export function ReaderToolbar({
   );
 
   return (
-    <div className="sticky top-16 z-20 w-full bg-[var(--card)]/95 backdrop-blur-md border-b border-[var(--border)] py-2.5 px-4 sm:px-6 shadow-xs">
+    <div className="sticky top-[72px] sm:top-[74px] z-30 w-full bg-[var(--card)]/95 backdrop-blur-md border-b border-[var(--border)] py-2.5 px-4 sm:px-6 shadow-xs transition-colors">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
         
         {/* Surah Navigation Selector */}

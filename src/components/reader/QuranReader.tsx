@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Play, Pause, Volume2, Sparkles } from 'lucide-react';
 import { Surah, Ayah, QuranWord } from '@/types/quran';
 import { getSurahByNumber } from '@/lib/quran-data/surahs';
 import { getSurahAyahs } from '@/lib/quran-data/quran-service';
+import { useAudioPlayer } from '@/lib/audio/audio-player-context';
 import { ReaderToolbar } from './ReaderToolbar';
 import { AyahCard } from './AyahCard';
 import { WordDetailSheet } from './WordDetailSheet';
@@ -13,12 +15,23 @@ import { updateReadingProgress } from '@/lib/storage/user-storage';
 
 interface QuranReaderProps {
   initialSurahNumber?: number;
+  initialActiveWordByWordAyah?: number | null;
 }
 
-export function QuranReader({ initialSurahNumber = 1 }: QuranReaderProps) {
+export function QuranReader({ 
+  initialSurahNumber = 1,
+  initialActiveWordByWordAyah = null
+}: QuranReaderProps) {
   const [currentSurahNumber, setCurrentSurahNumber] = useState(initialSurahNumber);
   const [ayahs, setAyahs] = useState<Ayah[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Sync with global audio player
+  const { isPlaying, currentSurah: playingSurah, playAyah, pause, resume, setSurah } = useAudioPlayer();
+  const isThisSurahPlaying = isPlaying && playingSurah === currentSurahNumber;
+
+  // At a time only ONE Ayat displays its full Word-by-Word meaning breakdown
+  const [activeWordByWordAyah, setActiveWordByWordAyah] = useState<number | null>(initialActiveWordByWordAyah);
 
   // Display Preferences
   const [arabicFontSize, setArabicFontSize] = useState(30);
@@ -38,6 +51,9 @@ export function QuranReader({ initialSurahNumber = 1 }: QuranReaderProps) {
     let isMounted = true;
     setIsLoading(true);
 
+    // Notify audio player context of active surah
+    setSurah(currentSurahNumber);
+
     getSurahAyahs(currentSurahNumber)
       .then((data) => {
         if (isMounted) {
@@ -54,7 +70,7 @@ export function QuranReader({ initialSurahNumber = 1 }: QuranReaderProps) {
     return () => {
       isMounted = false;
     };
-  }, [currentSurahNumber]);
+  }, [currentSurahNumber, setSurah]);
 
   const handleNavigateToAyah = (surahNum: number, ayahNum: number) => {
     if (surahNum !== currentSurahNumber) {
@@ -111,6 +127,32 @@ export function QuranReader({ initialSurahNumber = 1 }: QuranReaderProps) {
             <p className="text-xs sm:text-sm text-emerald-100 max-w-lg mx-auto">
               {currentSurah.translation_en} • <span className="font-bangla">{currentSurah.translation_bn}</span>
             </p>
+
+            {/* Play Full Surah Action Button */}
+            <div className="pt-2 flex justify-center">
+              <button
+                onClick={() => {
+                  if (isThisSurahPlaying) {
+                    pause();
+                  } else {
+                    playAyah(currentSurah.number, 1);
+                  }
+                }}
+                className="px-5 py-2.5 rounded-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer font-bangla hover:scale-105 active:scale-95"
+              >
+                {isThisSurahPlaying ? (
+                  <>
+                    <Pause className="w-4 h-4 fill-slate-950" />
+                    <span>তিলাওয়াত বিরতি দিন (Pause)</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4 fill-slate-950 ml-0.5" />
+                    <span>সম্পূর্ণ সূরা তিলাওয়াত শুনুন (Play Full Surah)</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -139,6 +181,8 @@ export function QuranReader({ initialSurahNumber = 1 }: QuranReaderProps) {
                 showBangla={showBangla}
                 showTransliteration={showTransliteration}
                 showWordByWord={showWordByWord}
+                isWordByWordActive={activeWordByWordAyah === ayah.ayah_number}
+                onToggleWordByWord={(num) => setActiveWordByWordAyah((prev) => (prev === num ? null : num))}
                 arabicFontSize={arabicFontSize}
                 onSelectWord={(w) => setSelectedWord(w)}
                 onOpenTafsir={(a) => setSelectedTafsirAyah(a)}

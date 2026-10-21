@@ -11,7 +11,9 @@ import {
   ChevronUp, 
   ChevronDown, 
   X,
-  Gauge
+  Gauge,
+  BookOpen,
+  Sparkles
 } from 'lucide-react';
 import { useAudioPlayer } from '@/lib/audio/audio-player-context';
 import { RECITERS_DATA } from '@/lib/quran-data/reciters';
@@ -27,6 +29,7 @@ export function PersistentAudioBar() {
     currentTime,
     duration,
     repeatMode,
+    playAyah,
     togglePlay,
     nextAyah,
     previousAyah,
@@ -38,6 +41,8 @@ export function PersistentAudioBar() {
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [showReciterList, setShowReciterList] = useState(false);
+  const [showAyahJumper, setShowAyahJumper] = useState(false);
+  const [jumpInput, setJumpInput] = useState('');
 
   const surahMeta = getSurahByNumber(currentSurah);
   const activeReciter = RECITERS_DATA.find((r) => r.id === reciterId) || RECITERS_DATA[0];
@@ -64,6 +69,92 @@ export function PersistentAudioBar() {
 
   return (
     <div className="fixed bottom-14 lg:bottom-0 left-0 right-0 z-35 bg-[var(--card)] border-t border-[var(--border)] shadow-xl transition-all">
+      {/* Ayah Jumper Popover */}
+      {showAyahJumper && (
+        <div className="absolute left-4 sm:left-8 bottom-full mb-3 w-80 sm:w-96 p-4 rounded-3xl bg-[var(--card)] border border-[var(--border)] shadow-2xl space-y-3 z-50 animate-in slide-in-from-bottom-2 duration-150">
+          <div className="flex items-center justify-between pb-1">
+            <div className="flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <span className="text-xs font-bold text-[var(--foreground)] uppercase tracking-wider">
+                Instant Ayah Jumper
+              </span>
+            </div>
+            <button 
+              onClick={() => setShowAyahJumper(false)}
+              className="p-1 rounded-lg hover:bg-[var(--muted)] text-[var(--muted-foreground)] cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* The Amber Card from Screenshot */}
+          <div className="bg-amber-400 text-slate-950 p-3 rounded-2xl flex items-center gap-3 shadow-md">
+            <div className="w-9 h-9 rounded-xl bg-slate-950 text-amber-400 flex items-center justify-center shrink-0">
+              <BookOpen className="w-4 h-4 text-amber-400" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-[10px] font-black uppercase tracking-wider text-slate-950">
+                VERSE {currentSurah}:{currentAyah}
+              </div>
+              <div className="text-xs font-bold text-slate-900 truncate">
+                Surah {surahMeta?.name_en} ({surahMeta?.name_ar})
+              </div>
+            </div>
+          </div>
+
+          {/* Numeric Input */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const num = parseInt(jumpInput, 10);
+              if (!isNaN(num) && surahMeta) {
+                const clamped = Math.max(1, Math.min(num, surahMeta.verses_count));
+                playAyah(currentSurah, clamped);
+                setShowAyahJumper(false);
+                setJumpInput('');
+              }
+            }}
+            className="flex gap-2"
+          >
+            <input
+              type="number"
+              min={1}
+              max={surahMeta?.verses_count || 1}
+              value={jumpInput}
+              onChange={(e) => setJumpInput(e.target.value)}
+              placeholder={`Verse 1 - ${surahMeta?.verses_count || 7}...`}
+              className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] outline-none focus:border-amber-500 font-medium"
+            />
+            <button
+              type="submit"
+              className="px-3.5 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs hover:bg-amber-600 cursor-pointer"
+            >
+              Jump
+            </button>
+          </form>
+
+          {/* Quick Ayah Selector Grid */}
+          <div className="max-h-36 overflow-y-auto grid grid-cols-6 sm:grid-cols-8 gap-1.5 p-1 bg-[var(--muted)]/50 rounded-xl">
+            {Array.from({ length: surahMeta?.verses_count || 7 }, (_, i) => i + 1).map((vNum) => (
+              <button
+                key={vNum}
+                onClick={() => {
+                  playAyah(currentSurah, vNum);
+                  setShowAyahJumper(false);
+                }}
+                className={`h-7 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  currentAyah === vNum
+                    ? 'bg-amber-400 text-slate-950 font-black'
+                    : 'bg-[var(--card)] hover:bg-amber-100 dark:hover:bg-amber-950/40 text-[var(--foreground)]'
+                }`}
+              >
+                {vNum}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 py-2 flex flex-col gap-1">
         
         {/* Progress Slider */}
@@ -85,12 +176,22 @@ export function PersistentAudioBar() {
           
           {/* Verse Info & Reciter */}
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-[var(--primary-light)] text-[var(--primary)] flex items-center justify-center font-bold text-xs shrink-0">
-              {currentSurah}:{currentAyah}
-            </div>
+            <button
+              onClick={() => setShowAyahJumper(!showAyahJumper)}
+              className="w-9 h-9 rounded-xl bg-[var(--primary-light)] hover:bg-amber-100 dark:hover:bg-amber-950/50 text-[var(--primary)] hover:text-amber-600 flex items-center justify-center font-bold text-xs shrink-0 border border-transparent hover:border-amber-400 transition-all cursor-pointer group"
+              title="Click to jump to any Ayah in this Surah"
+            >
+              <span className="group-hover:scale-105 transition-transform">{currentSurah}:{currentAyah}</span>
+            </button>
             <div className="min-w-0">
-              <div className="text-xs font-semibold text-[var(--foreground)] truncate">
-                {surahMeta?.name_en} ({surahMeta?.name_bn})
+              <div className="text-xs font-semibold text-[var(--foreground)] truncate flex items-center gap-1.5">
+                <span>{surahMeta?.name_en} ({surahMeta?.name_bn})</span>
+                <button
+                  onClick={() => setShowAyahJumper(!showAyahJumper)}
+                  className="text-[10px] font-bold text-amber-600 dark:text-amber-400 hover:underline cursor-pointer"
+                >
+                  Jump Ayah
+                </button>
               </div>
               <div className="text-[11px] text-[var(--muted-foreground)] truncate flex items-center gap-1">
                 <span>{activeReciter.name}</span>
@@ -141,12 +242,20 @@ export function PersistentAudioBar() {
             {/* Repeat Mode */}
             <button
               onClick={handleRepeatCycle}
-              className={`p-1.5 rounded-md border border-[var(--border)] transition-colors ${
+              className={`p-1.5 rounded-md border border-[var(--border)] transition-colors flex items-center gap-1 ${
                 repeatMode !== 'none' ? 'bg-[var(--primary-light)] text-[var(--primary)] border-[var(--primary)]' : 'hover:bg-[var(--muted)]'
               }`}
-              title={`Repeat: ${repeatMode}`}
+              title={
+                repeatMode === 'single'
+                  ? 'একক আয়াত পুনরাবৃত্তি (Repeat Ayah)'
+                  : repeatMode === 'surah'
+                  ? 'সম্পূর্ণ সূরা পুনরাবৃত্তি (Repeat Surah)'
+                  : 'ধারাবাহিক তিলাওয়াত (Continuous Surah Play)'
+              }
             >
               <Repeat className="w-3.5 h-3.5" />
+              {repeatMode === 'single' && <span className="text-[9px] font-black leading-none">1</span>}
+              {repeatMode === 'surah' && <span className="text-[9px] font-black leading-none">All</span>}
             </button>
 
             {/* Reciter Selector Dropdown */}

@@ -26,6 +26,15 @@ export function RelatedAyahsDrawer({
     setRelatedList(list);
   }, [surahNumber, ayahNumber]);
 
+  // Lock body scroll when drawer is open
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
+
   const filteredList = selectedFilter === 'all' 
     ? relatedList 
     : relatedList.filter((r) => r.relation_type === selectedFilter);
@@ -48,9 +57,9 @@ export function RelatedAyahsDrawer({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/60 backdrop-blur-xs animate-in fade-in duration-150 overflow-hidden">
       <div 
-        className="w-full sm:w-[500px] md:w-[560px] h-full bg-[var(--card)] border-l border-[var(--border)] shadow-2xl flex flex-col animate-in slide-in-from-right duration-200"
+        className="w-full sm:w-[500px] md:w-[560px] h-full max-h-screen bg-[var(--card)] border-l border-[var(--border)] shadow-2xl flex flex-col animate-in slide-in-from-right duration-200 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -105,7 +114,7 @@ export function RelatedAyahsDrawer({
         </div>
 
         {/* Ayahs List */}
-        <div className="p-4 overflow-y-auto flex-1 space-y-3">
+        <div className="p-4 overflow-y-auto min-h-0 flex-1 space-y-3 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
           {filteredList.map((rel, idx) => (
             <div
               key={idx}

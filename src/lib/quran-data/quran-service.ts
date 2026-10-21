@@ -24,19 +24,40 @@ export async function getSurahAyahs(surahNumber: number): Promise<Ayah[]> {
   }
 
   try {
-    // Attempt fetch from Quran.com API v4 with words, translations (131: Saheeh Int, 161: Bengali Taisirul Quran)
+    // Fetch from Quran.com API v4 with words, translations (20: Saheeh International, 161: Taisirul Quran)
     const res = await fetch(
-      `https://api.quran.com/api/v4/verses/by_chapter/${surahNumber}?language=en&words=true&translations=131,161&word_fields=text_uthmani,translation,transliteration&per_page=300`,
+      `https://api.quran.com/api/v4/verses/by_chapter/${surahNumber}?language=en&words=true&translations=20,161&word_fields=text_uthmani,translation,transliteration&per_page=300`,
       { next: { revalidate: 86400 } } // Cache 24 hours
     );
 
     if (res.ok) {
       const data = await res.json();
+      const cleanHtml = (txt: string) => txt.replace(/<sup.*?<\/sup>/gi, '').replace(/<.*?>/g, '').trim();
+
       const parsedAyahs: Ayah[] = (data.verses || []).map((v: any, idx: number) => {
         const ayahNum = idx + 1;
         const textAr = v.text_uthmani || v.words?.map((w: any) => w.text_uthmani).join(' ') || '';
-        const transEn = v.translations?.find((t: any) => t.resource_id === 131)?.text?.replace(/<sup.*?<\/sup>/g, '') || 'Translation unavailable';
-        const transBn = v.translations?.find((t: any) => t.resource_id === 161)?.text?.replace(/<sup.*?<\/sup>/g, '') || 'অনুবাদ লোড হচ্ছে...';
+
+        // Find English translation: primary is resource 20 (Saheeh International)
+        const enObj = 
+          v.translations?.find((t: any) => t.resource_id === 20) ||
+          v.translations?.find((t: any) => t.resource_id === 131) ||
+          v.translations?.find((t: any) => t.resource_id === 85) ||
+          v.translations?.find((t: any) => /[a-zA-Z]{3,}/.test(t.text || ''));
+
+        // Find Bangla translation: primary is resource 161 (Taisirul Quran)
+        const bnObj = 
+          v.translations?.find((t: any) => t.resource_id === 161) ||
+          v.translations?.find((t: any) => t.resource_id === 213) ||
+          v.translations?.find((t: any) => /[\u0980-\u09FF]/.test(t.text || ''));
+
+        const transEn = enObj?.text 
+          ? cleanHtml(enObj.text) 
+          : v.words?.map((w: any) => w.translation?.text).filter(Boolean).join(' ') || `Surah ${surahMeta.name_en}, Ayah ${ayahNum}`;
+
+        const transBn = bnObj?.text 
+          ? cleanHtml(bnObj.text) 
+          : `সূরা ${surahMeta.name_bn}, আয়াত ${ayahNum}।`;
 
         const words: QuranWord[] = (v.words || []).map((w: any, wIdx: number) => ({
           id: `${surahNumber}:${ayahNum}:${wIdx + 1}`,
