@@ -27,6 +27,7 @@ import {
 import { AISearchResult } from '@/types/quran';
 import { useLanguage } from '@/lib/language/language-context';
 import { getSurahByNumber } from '@/lib/quran-data/surahs';
+import { queryAIStudyAssistant } from '@/lib/ai/ai-service';
 
 export function AIChatAssistant() {
   const { language, toggleLanguage, setLanguage, t } = useLanguage();
@@ -98,23 +99,37 @@ export function AIChatAssistant() {
     }
 
     try {
-      const res = await fetch('/api/ai/study', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          query: q, 
+      let data: AISearchResult | null = null;
+      try {
+        const res = await fetch('/api/ai/study', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            query: q, 
+            language,
+            customApiKey: geminiApiKey.trim() || undefined,
+            modelName: selectedModel
+          })
+        });
+
+        if (res.ok) {
+          data = await res.json();
+        }
+      } catch (networkErr) {
+        // Fallback for static environments (e.g. GitHub Pages) where /api routes do not run as a server
+        console.info('Falling back to client-side AI assistant engine:', networkErr);
+      }
+
+      if (!data) {
+        data = await queryAIStudyAssistant({
+          query: q,
           language,
           customApiKey: geminiApiKey.trim() || undefined,
           modelName: selectedModel
-        })
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setResult(data);
-      } else {
-        throw new Error('Failed to fetch AI study answer');
+        });
       }
+
+      setResult(data);
     } catch (err) {
       console.warn('AI study assistant error:', err);
     } finally {
