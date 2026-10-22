@@ -1,0 +1,16 @@
+{
+  "name": "Al-Quran Platform",
+  "short_name": "Al-Quran",
+  "description": "An Intelligent, Interactive Quran Platform for Reading, Study, and Reflection",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09130e",
+  "theme_color": "#0f5132",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

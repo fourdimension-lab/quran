@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Radiant Emerald Gradient -->
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#047857" />
+      <stop offset="50%" stop-color="#064e3b" />
+      <stop offset="100%" stop-color="#022c22" />
+    </linearGradient>
+
+    <!-- Gold Accent Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde68a" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#f59e0b" flood-opacity="0.3"/>
+    </filter>
+
+    <filter id="shadowFilter" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Base Rounded Squircle with Shadow -->
+  <rect x="24" y="24" width="464" height="464" rx="120" fill="url(#emeraldGrad)" filter="url(#shadowFilter)"/>
+  
+  <!-- Outer Gold Inset Border -->
+  <rect x="28" y="28" width="456" height="456" rx="116" fill="none" stroke="url(#goldGrad)" stroke-width="8" stroke-opacity="0.9" />
+
+  <!-- Inner Delicate Filigree Ring -->
+  <circle cx="256" cy="256" r="190" fill="none" stroke="url(#goldGrad)" stroke-width="3" stroke-dasharray="8 6" stroke-opacity="0.4" />
+  <circle cx="256" cy="256" r="176" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" stroke-opacity="0.6" />
+
+  <!-- 8-Point Geometric Islamic Star Pattern (Rub el Hizb) subtle background -->
+  <g transform="translate(256, 256) scale(1.15)" stroke="url(#goldGrad)" stroke-width="2" stroke-opacity="0.25" fill="none">
+    <rect x="-100" y="-100" width="200" height="200" rx="16" />
+    <rect x="-100" y="-100" width="200" height="200" rx="16" transform="rotate(45)" />
+  </g>
+
+  <!-- Calligraphic Arabic Text "قرآن" centered & styled -->
+  <g filter="url(#goldGlow)">
+    <text 
+      x="256" 
+      y="300" 
+      font-family="system-ui, -apple-system, 'Traditional Arabic', 'Scheherazade New', 'Amiri', serif" 
+      font-size="180" 
+      font-weight="900" 
+      fill="url(#goldGrad)" 
+      text-anchor="middle"
+      letter-spacing="2"
+    >
+      قرآن
+    </text>
+  </g>
+
+  <!-- Small Shimmer Stars -->
+  <circle cx="140" cy="140" r="4" fill="#fde68a" opacity="0.8" />
+  <circle cx="372" cy="140" r="4" fill="#fde68a" opacity="0.8" />
+  <circle cx="256" cy="100" r="5" fill="#fde68a" opacity="0.9" />
+</svg>
