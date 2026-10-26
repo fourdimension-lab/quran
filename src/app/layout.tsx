@@ -16,6 +16,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://quran.sakib.bond'),
   title: 'Al-Quran — Intelligent, Interactive Quran Platform',
   description: 'Read, explore, study, and listen to the Holy Quran with clickable word-by-word meanings, classical Tafsir, related Ayah discovery, and AI study assistant.',
   keywords: ['Quran', 'Al-Quran', 'Tafsir', 'Quran Bangla', 'Quran English', 'Word by word Quran', 'Quran Audio', 'Islamic Study'],
@@ -32,6 +33,9 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: 'default',
     title: 'Al-Quran'
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   }
 };
 
